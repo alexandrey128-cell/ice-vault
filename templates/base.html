@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{% if page.full_title %}{{ page.title }}{% else %}{{ page.title }} | Ice Vault NYC{% endif %}</title>
+<meta name="description" content="{{ page.description }}">
+<link rel="canonical" href="{{ site.domain }}{{ page.path }}">
+<meta property="og:title" content="{{ page.title }}">
+<meta property="og:description" content="{{ page.description }}">
+<meta property="og:type" content="website">
+<meta property="og:url" content="{{ site.domain }}{{ page.path }}">
+<meta name="theme-color" content="#0A0E14">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@75..125,400..700&family=Bodoni+Moda:ital,opsz,wght@0,6..96,400..700;1,6..96,400..700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/css/site.css">
+{% block head %}{% endblock %}
+</head>
+<body class="{{ page.body_class }}" data-base="{{ base }}" data-form-endpoint="{{ site.form_endpoint }}" data-phone="{{ site.phone_display }}" data-tel="{{ site.phone_tel }}" data-email="{{ site.email }}" data-wire="{{ site.wire_discount_pct }}" data-months="{{ site.financing_months }}">
+<a class="skip" href="#main">Skip to content</a>
+{% include "partials/header.html" %}
+<main id="main">
+{% block main %}{% endblock %}
+</main>
+{% include "partials/footer.html" %}
+<div class="toast" id="toast" role="status" aria-live="polite" hidden></div>
+<script src="/js/site.js" defer></script>
+{% block scripts %}{% endblock %}
+</body>
+</html>

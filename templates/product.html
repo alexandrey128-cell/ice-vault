@@ -1,0 +1,89 @@
+{% extends "base.html" %}
+{% from "partials/macros.html" import card, trust, field, contact_fields %}
+{% block head %}<script type="application/ld+json">{{ jsonld }}</script>{% endblock %}
+{% block main %}
+<div class="wrap">
+  <nav class="crumbs" aria-label="Breadcrumb"><a href="/">Home</a><a href="/collections/{{ 'men' if p.gender == 'mens' else 'women' }}/">{{ "Men's" if p.gender == 'mens' else "Women's" }}</a><a href="{{ col.url }}">{{ col.title.replace("Men's ", "").replace("Women's ", "") }}</a><span>{{ p.title }}</span></nav>
+  <article class="pdp" data-product>
+    <script type="application/json" id="product-data">{{ pdata }}</script>
+    <div class="gallery">
+      <div class="gallery-main view-1" data-gallery-main>
+        <img src="{{ p.image }}" alt="{{ p.title }}" width="600" height="600">
+      </div>
+      <div class="thumbs" role="tablist" aria-label="Views">
+        <button type="button" class="thumb is-active" data-view="1" aria-label="Full view"><img src="{{ p.image }}" alt=""></button>
+        <button type="button" class="thumb" data-view="2" aria-label="Close up"><img src="{{ p.image }}" alt="" class="zoom"></button>
+        <button type="button" class="thumb" data-view="3" aria-label="Angled view"><img src="{{ p.image }}" alt="" class="angle"></button>
+      </div>
+    </div>
+    <div class="buy">
+      <p class="pdp-metal">{{ p.metal }}{% if p.stone_name %}, {{ p.stone_name|lower }}s{% endif %}</p>
+      <h1>{{ p.title }}</h1>
+      <p class="pdp-price"><span data-price>{{ p.price|money }}</span>{% if p.compare_at %} <s data-compare>{{ p.compare_at|money }}</s>{% endif %}</p>
+      <p class="pdp-alt">Pay by wire or crypto: <strong data-wire-price>{{ (p.price * (100 - site.wire_discount_pct) / 100)|round|int|money }}</strong>. Or <strong data-monthly>{{ (p.price / site.financing_months)|round|int|money }}</strong> a month for {{ site.financing_months }} months at 0%. <a href="/financing/">How financing works</a></p>
+      <form class="options" data-options>
+        {% for name, values in p.variants.items() if values %}
+        <div class="field">
+          <label for="opt-{{ loop.index }}">{{ name }}</label>
+          <select id="opt-{{ loop.index }}" name="{{ name }}" data-option="{{ name }}">
+            {% for v in values %}<option{% if (name == 'Length' and p.length and v.startswith(p.length|string ~ ' ')) or (name == 'Color' and v == color_names[p.color]) %} selected{% endif %}>{{ v }}</option>{% endfor %}
+          </select>
+        </div>
+        {% endfor %}
+        <div class="field field-qty">
+          <label for="qty">Quantity</label>
+          <input id="qty" name="qty" type="number" min="1" max="10" value="1" data-qty>
+        </div>
+        <div class="buy-actions">
+          <button class="btn btn-ice" type="submit" data-add>Add to cart</button>
+          <button class="btn btn-ghost" type="button" data-offer-open>Make an offer</button>
+        </div>
+      </form>
+      <p class="stock">In stock. Ships in 2 to 5 business days. <a href="/shipping-returns/">Shipping and returns</a></p>
+      <ul class="pdp-trust">
+        <li>Free insured shipping in the US</li>
+        <li>Signed appraisal in the box</li>
+        <li>30-day returns on stock pieces</li>
+        <li>Questions? Call or text <a href="tel:{{ site.phone_tel }}">{{ site.phone_display }}</a></li>
+      </ul>
+      <section class="pdp-section">
+        <h2>Details</h2>
+        <p>{{ p.desc }}</p>
+      </section>
+      <section class="pdp-section">
+        <h2>Specifications</h2>
+        <table class="specs">
+          {% for k, v in p.specs %}<tr><th>{{ k }}</th><td>{{ v }}</td></tr>{% endfor %}
+          <tr><th>Item number</th><td>{{ p.sku }}</td></tr>
+        </table>
+      </section>
+    </div>
+  </article>
+</div>
+<dialog class="modal" id="offer">
+  <form method="dialog" class="modal-close-form"><button class="drawer-close" aria-label="Close">&#x2715;</button></form>
+  <h2>Make an offer</h2>
+  <p class="lead">{{ p.title }}. Listed at {{ p.price|money }}. Serious offers only, we reply within one business day.</p>
+  <form data-form="Offer on {{ p.sku }} {{ p.title }}">
+    <input type="hidden" name="item" value="{{ p.sku }} {{ p.title }}">
+    <input type="hidden" name="listed_price" value="{{ p.price|money }}">
+    {{ field('offer', 'Your offer in US dollars', type='number', required=True, placeholder='2400') }}
+    {{ contact_fields() }}
+    {{ field('note', 'Anything else', type='textarea') }}
+    <button class="btn" type="submit">Send offer</button>
+    <p class="form-status" aria-live="polite"></p>
+  </form>
+</dialog>
+{% if related %}
+<section class="section">
+  <div class="wrap">
+    <div class="section-head">
+      <h2>More {{ col.title.replace("Men's ", "").replace("Women's ", "")|lower }}</h2>
+      <a class="count-link" href="{{ col.url }}">Shop all {{ col.count }}</a>
+    </div>
+    <div class="grid">{% for q in related %}{{ card(q) }}{% endfor %}</div>
+  </div>
+</section>
+{% endif %}
+{{ trust() }}
+{% endblock %}

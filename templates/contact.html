@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+{% from "partials/macros.html" import field, select, contact_fields %}
+{% block main %}
+<div class="wrap">
+  <nav class="crumbs" aria-label="Breadcrumb"><a href="/">Home</a><span>Contact</span></nav>
+  <header class="page-head">
+    <h1>Talk to a jeweler.</h1>
+    <p class="lead">Call, text, email or come in. We answer the phone {{ site.hours[0][0]|lower }} during shop hours and reply to texts and email within one business day.</p>
+  </header>
+  <div class="form-grid">
+    <div class="contact-info">
+      <p class="contact-big"><a href="tel:{{ site.phone_tel }}">{{ site.phone_display }}</a></p>
+      <p>Call or text. <a href="sms:{{ site.sms_tel }}">Send a text now</a>.</p>
+      <p><a href="mailto:{{ site.email }}">{{ site.email }}</a></p>
+      <h2>Showroom</h2>
+      <p>{{ site.address_line1 }}<br>{{ site.address_line2 }}<br>Fourth floor, buzzer 402.</p>
+      <dl class="hours">
+        {% for day, hrs in site.hours %}<div><dt>{{ day }}</dt><dd>{{ hrs }}</dd></div>{% endfor %}
+      </dl>
+      <p>Nearest trains: B, D, F, M at 47-50 Sts Rockefeller Center. N, R, W at 49 St.</p>
+      <p><a class="btn btn-ghost" href="/appointment/">Book an appointment</a></p>
+      <div class="map-frame">
+        <iframe title="Map to Ice Vault" loading="lazy" src="https://www.openstreetmap.org/export/embed.html?bbox={{ site.map_lon - 0.006 }}%2C{{ site.map_lat - 0.003 }}%2C{{ site.map_lon + 0.006 }}%2C{{ site.map_lat + 0.003 }}&amp;layer=mapnik&amp;marker={{ site.map_lat }}%2C{{ site.map_lon }}"></iframe>
+      </div>
+    </div>
+    <form class="form" data-form="Contact form">
+      <h2>Send a message</h2>
+      {{ contact_fields() }}
+      {{ select('topic', 'Topic', ['Question about a piece', 'Order status', 'Custom project', 'Repair or resizing', 'Sell or trade in', 'Something else']) }}
+      {{ field('message', 'Message', type='textarea', required=True) }}
+      <button class="btn btn-ice" type="submit">Send message</button>
+      <p class="form-status" aria-live="polite"></p>
+    </form>
+  </div>
+</div>
+{% endblock %}

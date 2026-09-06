@@ -1,0 +1,74 @@
+<footer class="site-footer">
+  <div class="wrap">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <a class="brand" href="/">{{ logo_mark }}<span class="brand-name">Ice Vault</span></a>
+        <p class="footer-concierge">Call or text for a personal jeweler.</p>
+        <a class="footer-phone" href="tel:{{ site.phone_tel }}">{{ site.phone_display }}</a>
+        <p class="footer-address">{{ site.address_line1 }}<br>{{ site.address_line2 }}</p>
+        <dl class="footer-hours">
+          {% for day, hrs in site.hours %}<div><dt>{{ day }}</dt><dd>{{ hrs }}</dd></div>{% endfor %}
+        </dl>
+        <p><a href="mailto:{{ site.email }}">{{ site.email }}</a></p>
+      </div>
+      <div class="footer-col">
+        <p class="footer-title"><a href="/collections/men/">Men's</a></p>
+        <ul>
+          {% for s in ['mens-chains','mens-pendants','mens-rings','mens-earrings','mens-bracelets','mens-watches'] %}
+          <li><a href="{{ cols[s].url }}">{{ cols[s].title.replace("Men's ", "") }}</a></li>
+          {% endfor %}
+          <li><a href="/collections/under-1000/">Under $1,000</a></li>
+          <li><a href="/collections/sale/">Sale</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <p class="footer-title"><a href="/collections/women/">Women's</a></p>
+        <ul>
+          {% for s in ['womens-necklaces','womens-pendants','womens-rings','womens-earrings','womens-bracelets','womens-watches'] %}
+          <li><a href="{{ cols[s].url }}">{{ cols[s].title.replace("Women's ", "") }}</a></li>
+          {% endfor %}
+          <li><a href="/collections/engagement/">Engagement</a></li>
+          <li><a href="/collections/gifts-under-500/">Gifts under $500</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <p class="footer-title"><a href="/custom/">Custom and services</a></p>
+        <ul>
+          <li><a href="/custom/">Start a custom project</a></li>
+          <li><a href="/ring-builder/">Engagement ring builder</a></li>
+          <li><a href="/diamond-search/">Diamond search</a></li>
+          <li><a href="/custom/gallery/">Past projects</a></li>
+          <li><a href="/services/">Repairs and resizing</a></li>
+          <li><a href="/sell/">Sell or trade in</a></li>
+          <li><a href="/appointment/">Book an appointment</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <p class="footer-title">Help</p>
+        <ul>
+          <li><a href="/contact/">Contact</a></li>
+          <li><a href="/shipping-returns/">Shipping and returns</a></li>
+          <li><a href="/financing/">Financing and layaway</a></li>
+          <li><a href="/faq/">Questions</a></li>
+          <li><a href="/reviews/">Reviews</a></li>
+          <li><a href="/about/">About</a></li>
+          <li><a href="mailto:{{ site.email_business }}">Business inquiries</a></li>
+        </ul>
+      </div>
+    </div>
+    <ul class="footer-trust">
+      <li>Free insured shipping worldwide</li>
+      <li>Certified appraisal with every piece</li>
+      <li>0% financing and layaway</li>
+      <li>30-day returns on stock pieces</li>
+    </ul>
+    <div class="footer-bottom">
+      <p>&copy; {{ year }} {{ site.legal_name }}. Prices in US dollars.</p>
+      <ul>
+        <li><a href="/privacy/">Privacy</a></li>
+        <li><a href="/terms/">Terms</a></li>
+        {% for name, href in site.socials.items() %}<li><a href="{{ href }}" rel="noopener">{{ name }}</a></li>{% endfor %}
+      </ul>
+    </div>
+  </div>
+</footer>

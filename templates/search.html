@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% block main %}
+<div class="wrap" data-search-page>
+  <header class="page-head">
+    <h1>Search</h1>
+    <form class="search-form search-big" action="/search/" method="get" role="search">
+      <input name="q" type="search" placeholder="Cuban chain, tennis bracelet, Rolex" aria-label="Search" data-search-input autofocus>
+      <button class="btn" type="submit">Search</button>
+    </form>
+    <p class="showing" data-search-status>Type to search {{ product_count }} pieces.</p>
+  </header>
+  <div class="grid" data-search-results></div>
+</div>
+{% endblock %}

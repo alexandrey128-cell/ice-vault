@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+{% from "partials/macros.html" import field, select, contact_fields %}
+{% block main %}
+<div class="wrap">
+  <nav class="crumbs" aria-label="Breadcrumb"><a href="/">Home</a><span>Sell or trade in</span></nav>
+  <header class="page-head">
+    <h1>Sell your gold, diamonds and watches.</h1>
+    <p class="lead">We pay by weight and purity for gold, by the stone for diamonds, and by the market for watches. Cash, wire, or store credit with a 10% bonus.</p>
+  </header>
+  <div class="form-grid">
+    <div>
+      <h2>How it works</h2>
+      <ol class="steps">
+        <li><strong>Send photos or bring it in.</strong> Use the form, or text photos to {{ site.phone_display }}.</li>
+        <li><strong>Get a number.</strong> We quote gold within the hour during shop hours. Diamonds and watches take a day.</li>
+        <li><strong>Get paid.</strong> In the shop, on the spot. By mail, we send an insured label and pay the day it arrives.</li>
+      </ol>
+      <h2>What we buy</h2>
+      <ul class="plain">
+        <li>Gold in any condition, 10K and up. Broken is fine.</li>
+        <li>Diamonds over 0.5 carats, with or without a report.</li>
+        <li>Rolex, Audemars Piguet, Patek Philippe, Cartier, Omega and Tudor.</li>
+        <li>Platinum and silver by weight.</li>
+      </ul>
+    </div>
+    <form class="form" data-form="Sell or trade in">
+      {{ contact_fields() }}
+      {{ select('item', 'What are you selling', ['Gold jewelry', 'Diamonds', 'Watch', 'Several items']) }}
+      {{ field('details', 'Describe it', type='textarea', required=True, placeholder='14K rope chain, 24 inches, about 30 grams. Clasp is broken.') }}
+      {{ select('payout', 'How do you want to be paid', ['Store credit with 10% bonus', 'Cash in the shop', 'Bank wire']) }}
+      <div class="field">
+        <label for="f-photos">Photos <span class="optional">optional</span></label>
+        <input id="f-photos" name="photos" type="file" accept="image/*" multiple>
+      </div>
+      <button class="btn btn-ice" type="submit">Get a quote</button>
+      <p class="form-status" aria-live="polite"></p>
+    </form>
+  </div>
+</div>
+{% endblock %}

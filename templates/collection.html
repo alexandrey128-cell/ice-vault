@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+{% from "partials/macros.html" import card, trust %}
+{% block main %}
+<div class="wrap">
+  <nav class="crumbs" aria-label="Breadcrumb"><a href="/">Home</a>{% if col.gender %}<a href="/collections/{{ 'men' if col.gender == 'mens' else 'women' }}/">{{ "Men's" if col.gender == 'mens' else "Women's" }}</a>{% endif %}<span>{{ col.title }}</span></nav>
+  <header class="collection-head">
+    <h1>{{ col.title }} <span class="count">{{ col.count }}</span></h1>
+    <p class="lead">{{ col.blurb }}</p>
+  </header>
+  <div class="collection" data-collection>
+    <aside class="filters" id="filters-panel">
+      <div class="filters-head">
+        <h2>Filter</h2>
+        <button type="button" class="link" data-filters-clear>Clear</button>
+        <button type="button" class="drawer-close filters-close" aria-label="Close filters" data-filters-close>&#x2715;</button>
+      </div>
+      <form id="filters">
+        {% for f in facets %}
+        <fieldset class="filter">
+          <legend>{{ f.title }}</legend>
+          {% for o in f.options %}
+          <label><input type="checkbox" name="{{ f.name }}" value="{{ o.value }}"><span>{{ o.label }}</span><small>{{ o.count }}</small></label>
+          {% endfor %}
+        </fieldset>
+        {% endfor %}
+      </form>
+    </aside>
+    <div class="collection-main">
+      <div class="toolbar">
+        <button type="button" class="btn btn-ghost btn-sm filters-toggle" data-filters-open>Filter</button>
+        <p class="showing">Showing <span data-shown>{{ col.count }}</span> of {{ col.count }}</p>
+        <label class="sort">Sort
+          <select data-sort>
+            <option value="featured">Featured</option>
+            <option value="price-asc">Price, low to high</option>
+            <option value="price-desc">Price, high to low</option>
+            <option value="new">Newest</option>
+            <option value="az">A to Z</option>
+          </select>
+        </label>
+      </div>
+      <div class="grid" data-collection-grid>
+        {% for p in col.products %}{{ card(p) }}{% endfor %}
+      </div>
+      <p class="empty" data-empty hidden>No pieces match these filters. <button type="button" class="link" data-filters-clear>Clear the filters</button> or <a href="/custom/">ask us to make it</a>.</p>
+    </div>
+  </div>
+  {% if col.seo %}
+  <section class="seo-text">
+    <h2>About {{ col.title|lower }}</h2>
+    <p>{{ col.seo }}</p>
+    <p>Do not see what you want? <a href="/custom/">Start a custom project</a> or call {{ site.phone_display }}.</p>
+  </section>
+  {% endif %}
+</div>
+{{ trust() }}
+{% endblock %}

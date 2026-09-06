@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% block main %}
+<div class="wrap">
+  <nav class="crumbs" aria-label="Breadcrumb"><a href="/">Home</a><span>Questions</span></nav>
+  <header class="page-head">
+    <h1>Questions and answers.</h1>
+    <p class="lead">If yours is not here, call or text {{ site.phone_display }}.</p>
+  </header>
+  <div class="faq page-narrow">
+    {% for q, a in faq %}
+    <details{% if loop.first %} open{% endif %}><summary>{{ q }}</summary><p>{{ a }}</p></details>
+    {% endfor %}
+  </div>
+</div>
+{% endblock %}

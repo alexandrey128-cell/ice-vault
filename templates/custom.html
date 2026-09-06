@@ -1,0 +1,93 @@
+{% extends "base.html" %}
+{% from "partials/macros.html" import field, select, contact_fields, trust %}
+{% block main %}
+<div class="wrap">
+  <nav class="crumbs" aria-label="Breadcrumb"><a href="/">Home</a><span>Custom jewelry</span></nav>
+  <header class="page-head">
+    <h1>Custom jewelry, made with you.</h1>
+    <p class="lead">Pendants, rings, chains, bracelets and grillz. You bring the idea. We draw it, price it and make it on 47th Street. Most pieces take 3 to 8 weeks.</p>
+  </header>
+</div>
+<section class="section">
+  <div class="wrap process-grid">
+    <ol class="steps steps-big">
+      <li><strong>Tell us the idea.</strong> Fill in the form below, text us photos, or come to the shop. A sketch on a napkin is enough.</li>
+      <li><strong>Get a render and a price.</strong> Within 3 business days we send a 3D render and a fixed quote. Change anything until it is right.</li>
+      <li><strong>Approve and pay the deposit.</strong> 30% starts the work. The balance is due when the piece is finished.</li>
+      <li><strong>We make it.</strong> Casting, setting and polishing happen in our workshop. You get photos at each stage.</li>
+      <li><strong>Pick it up or we ship it.</strong> Insured shipping and a signed appraisal are included.</li>
+    </ol>
+    <aside class="panel">
+      <h2>What it costs</h2>
+      <ul class="plain">
+        <li>Custom pendants start at $1,500 in 10K gold.</li>
+        <li>Custom rings start at $900.</li>
+        <li>Diamond pave adds about $450 per carat in lab diamonds, $1,500 per carat in natural.</li>
+        <li>Rush work in 2 weeks adds 20%.</li>
+      </ul>
+      <h2>Materials</h2>
+      <ul class="plain">
+        <li>10K, 14K, 18K yellow, white and rose gold. Platinum on request.</li>
+        <li>Natural and lab-grown diamonds, VS clarity or better.</li>
+        <li>Emeralds, rubies, sapphires and opals.</li>
+        <li>Hand engraving and enamel.</li>
+      </ul>
+    </aside>
+  </div>
+</section>
+<section class="section">
+  <div class="wrap form-grid">
+    <div>
+      <h2>Start your project</h2>
+      <p class="lead">Tell us what you want to make. We reply within one business day.</p>
+      <p>Prefer to talk? Call or text <a href="tel:{{ site.phone_tel }}">{{ site.phone_display }}</a> or <a href="/appointment/">book a visit</a>.</p>
+    </div>
+    <form class="form" data-form="Custom project request">
+      {{ contact_fields() }}
+      <div class="field-row">
+        {{ select('piece', 'What are we making', ['Pendant', 'Ring', 'Chain', 'Bracelet', 'Earrings', 'Grillz', 'Something else']) }}
+        {{ select('budget', 'Budget', ['Under $1,500', '$1,500 to $3,000', '$3,000 to $6,000', '$6,000 to $12,000', '$12,000 and up']) }}
+      </div>
+      <div class="field-row">
+        {{ select('metal', 'Metal', ['14K yellow gold', '14K white gold', '14K rose gold', '18K yellow gold', '18K white gold', '10K yellow gold', 'Platinum', 'Not sure yet']) }}
+        {{ select('stones', 'Stones', ['Lab diamonds', 'Natural diamonds', 'Colored stones', 'No stones', 'Not sure yet']) }}
+      </div>
+      {{ field('description', 'Describe the piece', type='textarea', required=True, placeholder='A round medallion, about the size of a quarter, with my initials in the middle and diamonds around the edge.') }}
+      <div class="field">
+        <label for="f-ref">Reference photos <span class="optional">optional</span></label>
+        <input id="f-ref" name="reference" type="file" accept="image/*" multiple>
+        <p class="help">If your email app cannot attach them, text them to {{ site.phone_display }}.</p>
+      </div>
+      <button class="btn btn-ice" type="submit">Send project request</button>
+      <p class="form-status" aria-live="polite"></p>
+    </form>
+  </div>
+</section>
+<section class="section">
+  <div class="wrap">
+    <div class="section-head">
+      <h2>Made here</h2>
+      <a class="count-link" href="/custom/gallery/">See all {{ custom_projects|length }} projects</a>
+    </div>
+    <div class="grid grid-gallery">
+      {% for c in custom_projects[:8] %}
+      <a class="gallery-item" href="/custom/gallery/#{{ c.slug }}">
+        <img src="{{ c.image }}" alt="{{ c.title }}" loading="lazy" width="600" height="600">
+        <span>{{ c.title }}</span>
+      </a>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+<section class="section">
+  <div class="wrap page-narrow">
+    <h2>Custom questions</h2>
+    <div class="faq">
+      {% for q, a in faq[2:3] + faq[7:8] + [('Can I use my own gold or stones?', 'Yes. We melt down your gold and credit its weight, and we set stones you bring in. We check every stone before we set it.'), ('What if I do not like the render?', 'We change it. You approve the design before we cast anything, and there is no charge for revisions before the deposit.')] %}
+      <details><summary>{{ q }}</summary><p>{{ a }}</p></details>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+{{ trust() }}
+{% endblock %}

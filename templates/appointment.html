@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+{% from "partials/macros.html" import field, select, contact_fields %}
+{% block main %}
+<div class="wrap">
+  <nav class="crumbs" aria-label="Breadcrumb"><a href="/">Home</a><span>Appointment</span></nav>
+  <header class="page-head">
+    <h1>Book a visit.</h1>
+    <p class="lead">Come to the showroom or take a video call from the bench. Tell us what you want to see and it will be on the counter when you arrive.</p>
+  </header>
+  <div class="form-grid">
+    <div>
+      <h2>What to expect</h2>
+      <ul class="plain">
+        <li>Thirty minutes with a jeweler, no pressure to buy.</li>
+        <li>Try on anything in stock. We size rings while you wait.</li>
+        <li>Bring a piece to repair, appraise or trade in.</li>
+        <li>Video calls run 15 minutes and we show the piece on camera, on a scale and under a loupe.</li>
+      </ul>
+      <p>{{ site.address_line1 }}, {{ site.address_line2 }}. Fourth floor, buzzer 402.</p>
+      <p>Or call <a href="tel:{{ site.phone_tel }}">{{ site.phone_display }}</a> and we book it on the spot.</p>
+    </div>
+    <form class="form" data-form="Appointment request">
+      {{ contact_fields() }}
+      <div class="field-row">
+        {{ select('type', 'Visit type', ['In the showroom', 'Video call']) }}
+        {{ field('date', 'Preferred date', type='date', required=True) }}
+      </div>
+      {{ select('time', 'Preferred time', ['Morning, 10 to 12', 'Midday, 12 to 2', 'Afternoon, 2 to 4', 'Late afternoon, 4 to 6']) }}
+      {{ field('interest', 'What do you want to see', type='textarea', placeholder='The 6mm Cuban in 14K, and I want to talk about a custom pendant.') }}
+      <button class="btn btn-ice" type="submit">Request appointment</button>
+      <p class="form-status" aria-live="polite"></p>
+    </form>
+  </div>
+</div>
+{% endblock %}

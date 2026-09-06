@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% block main %}
+<div class="wrap">
+  <nav class="crumbs" aria-label="Breadcrumb"><a href="/">Home</a><span>Cart</span></nav>
+  <header class="page-head">
+    <h1>Your cart</h1>
+  </header>
+  <div class="cart-layout" data-cart-page>
+    <div class="cart-lines" data-cart-lines></div>
+    <aside class="panel cart-summary" data-cart-summary hidden>
+      <h2>Summary</h2>
+      <dl class="summary">
+        <div><dt>Subtotal</dt><dd data-cart-subtotal>$0</dd></div>
+        <div><dt>Shipping</dt><dd>Free, insured</dd></div>
+        <div><dt>Wire or crypto price</dt><dd data-cart-wire>$0</dd></div>
+        <div><dt>Or per month, {{ site.financing_months }} months at 0%</dt><dd data-cart-monthly>$0</dd></div>
+      </dl>
+      <a class="btn btn-ice" href="/checkout/">Request an invoice</a>
+      <p class="help">We reply with a secure payment link within one business day. Or call {{ site.phone_display }} to pay by phone.</p>
+      {% if site.promo.active %}<p class="help">Sale code {{ site.promo.code }} is applied on the invoice for eligible pieces.</p>{% endif %}
+    </aside>
+    <p class="empty" data-cart-empty hidden>Your cart is empty. <a href="/collections/best-sellers/">See best sellers</a> or <a href="/collections/new-arrivals/">new arrivals</a>.</p>
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% block main %}
+<div class="wrap">
+  <nav class="crumbs" aria-label="Breadcrumb"><a href="/">Home</a><a href="/custom/">Custom</a><span>Past projects</span></nav>
+  <header class="page-head">
+    <h1>Past custom projects</h1>
+    <p class="lead">Every piece here started as a text, a sketch or a conversation at the counter. Prices are what the client paid. <a href="/custom/">Start yours</a>.</p>
+  </header>
+  <div class="grid grid-gallery gallery-page">
+    {% for c in custom_projects %}
+    <article class="gallery-card" id="{{ c.slug }}">
+      <img src="{{ c.image }}" alt="{{ c.title }}" loading="lazy" width="600" height="600">
+      <h2>{{ c.title }}</h2>
+      <p>{{ c.blurb }}</p>
+      <p class="gallery-price">{{ c.price|money }}</p>
+    </article>
+    {% endfor %}
+  </div>
+  <p class="center"><a class="btn" href="/custom/">Start a custom project</a></p>
+</div>
+{% endblock %}

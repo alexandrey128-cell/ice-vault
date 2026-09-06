@@ -1,0 +1,78 @@
+{% extends "base.html" %}
+{% from "partials/macros.html" import field, contact_fields %}
+{% block main %}
+<div class="wrap">
+  <nav class="crumbs" aria-label="Breadcrumb"><a href="/">Home</a><a href="/custom/">Custom</a><span>Diamond search</span></nav>
+  <header class="page-head">
+    <h1>Diamond search.</h1>
+    <p class="lead">Loose natural and lab-grown diamonds from our inventory and partner cutters. Every stone over 0.5 carats has a GIA or IGI report. Pick one and we set it in any ring, pendant or pair of studs.</p>
+  </header>
+  <div class="ds" data-ds>
+    <form class="ds-controls" id="ds-form">
+      <fieldset class="ds-shapes">
+        <legend>Shape</legend>
+        {% for s in ['Round', 'Oval', 'Cushion', 'Emerald', 'Princess', 'Pear', 'Radiant', 'Marquise', 'Asscher', 'Heart'] %}
+        <label class="chip"><input type="checkbox" name="shape" value="{{ s }}"><span>{{ s }}</span></label>
+        {% endfor %}
+      </fieldset>
+      <div class="ds-row">
+        <div class="field">
+          <span class="label">Origin</span>
+          <div class="seg">
+            <label><input type="radio" name="origin" value="all" checked><span>All</span></label>
+            <label><input type="radio" name="origin" value="natural"><span>Natural</span></label>
+            <label><input type="radio" name="origin" value="lab"><span>Lab grown</span></label>
+          </div>
+        </div>
+        <div class="field">
+          <label for="ds-cmin">Carat</label>
+          <div class="range-pair"><input id="ds-cmin" name="cmin" type="number" min="0.3" max="6" step="0.1" placeholder="0.3"><span>to</span><input name="cmax" type="number" min="0.3" max="6" step="0.1" placeholder="6.0" aria-label="Maximum carat"></div>
+        </div>
+        <div class="field">
+          <label for="ds-color">Color</label>
+          <div class="range-pair"><select id="ds-color" name="colmin">{% for c in 'DEFGHIJK' %}<option>{{ c }}</option>{% endfor %}</select><span>to</span><select name="colmax" aria-label="Lowest color">{% for c in 'DEFGHIJK' %}<option{% if c == 'K' %} selected{% endif %}>{{ c }}</option>{% endfor %}</select></div>
+        </div>
+        <div class="field">
+          <label for="ds-clar">Clarity</label>
+          <div class="range-pair"><select id="ds-clar" name="clmin">{% for c in ['FL','IF','VVS1','VVS2','VS1','VS2','SI1','SI2'] %}<option>{{ c }}</option>{% endfor %}</select><span>to</span><select name="clmax" aria-label="Lowest clarity">{% for c in ['FL','IF','VVS1','VVS2','VS1','VS2','SI1','SI2'] %}<option{% if c == 'SI2' %} selected{% endif %}>{{ c }}</option>{% endfor %}</select></div>
+        </div>
+        <div class="field">
+          <label for="ds-pmin">Price</label>
+          <div class="range-pair"><input id="ds-pmin" name="pmin" type="number" min="0" step="100" placeholder="$0"><span>to</span><input name="pmax" type="number" min="0" step="100" placeholder="Any" aria-label="Maximum price"></div>
+        </div>
+        <div class="field">
+          <label for="ds-cut">Cut</label>
+          <select id="ds-cut" name="cut"><option value="">Any</option><option>Excellent</option><option>Very Good</option><option>Good</option></select>
+        </div>
+      </div>
+      <div class="ds-actions">
+        <p class="showing"><span data-ds-count>0</span> diamonds</p>
+        <label class="sort">Sort <select name="sort"><option value="price-asc">Price, low to high</option><option value="price-desc">Price, high to low</option><option value="carat-desc">Carat, high to low</option><option value="carat-asc">Carat, low to high</option></select></label>
+        <button type="reset" class="link">Clear</button>
+      </div>
+    </form>
+    <div class="table-wrap">
+      <table class="ds-table">
+        <thead><tr><th>Shape</th><th>Carat</th><th>Color</th><th>Clarity</th><th>Cut</th><th>Origin</th><th>Report</th><th>Measurements</th><th>Price</th><th></th></tr></thead>
+        <tbody data-ds-rows></tbody>
+      </table>
+      <p class="empty" data-ds-empty hidden>No diamonds match. Widen the carat or price range, or <a href="/contact/">ask us to source one</a>.</p>
+      <p class="center"><button type="button" class="btn btn-ghost btn-sm" data-ds-more hidden>Show more</button></p>
+    </div>
+  </div>
+</div>
+<dialog class="modal" id="inquire">
+  <form method="dialog" class="modal-close-form"><button class="drawer-close" aria-label="Close">&#x2715;</button></form>
+  <h2>Ask about this diamond</h2>
+  <p class="lead" data-inquire-summary></p>
+  <form data-form="Diamond inquiry">
+    <input type="hidden" name="diamond" data-inquire-field>
+    {{ contact_fields() }}
+    {{ field('setting', 'What will it go in', placeholder='Solitaire ring, size 6, 14K white gold') }}
+    {{ field('note', 'Anything else', type='textarea') }}
+    <button class="btn" type="submit">Send inquiry</button>
+    <p class="form-status" aria-live="polite"></p>
+  </form>
+</dialog>
+{% endblock %}
+{% block scripts %}<script src="/js/diamonds.js" defer></script>{% endblock %}

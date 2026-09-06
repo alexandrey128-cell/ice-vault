@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% block main %}
+<div class="wrap">
+  <nav class="crumbs" aria-label="Breadcrumb"><a href="/">Home</a><span>Reviews</span></nav>
+  <header class="page-head">
+    <h1>Client reviews.</h1>
+    <p class="lead">Unedited. We ask every client for a review after delivery and post what they send.</p>
+  </header>
+  <div class="reviews reviews-page">
+    {% for r in reviews %}
+    <blockquote class="review">
+      <p class="stars" aria-label="{{ r.stars }} out of 5 stars">{% for i in range(r.stars) %}&#9733;{% endfor %}{% for i in range(5 - r.stars) %}<span class="star-off">&#9733;</span>{% endfor %}</p>
+      <p>{{ r.text }}</p>
+      <footer>{{ r.name }}, {{ r.city }}</footer>
+    </blockquote>
+    {% endfor %}
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+{% from "partials/macros.html" import trust %}
+{% block main %}
+<div class="wrap">
+  <nav class="crumbs" aria-label="Breadcrumb"><a href="/">Home</a><span>Financing</span></nav>
+  <header class="page-head">
+    <h1>Pay over time.</h1>
+    <p class="lead">Two ways to spread the cost. Both are interest free. Neither changes the price.</p>
+  </header>
+  <div class="two-col">
+    <section class="panel">
+      <h2>0% financing</h2>
+      <ul class="plain">
+        <li>{{ site.financing_months }} equal monthly payments, no interest, no fees.</li>
+        <li>On approved credit through our lending partner. Soft check to see your limit, no effect on your score.</li>
+        <li>Orders from $500 to $25,000.</li>
+        <li>The piece ships as soon as you are approved.</li>
+      </ul>
+      <p>Example: a $3,000 chain is $250 a month for {{ site.financing_months }} months. Total paid, $3,000.</p>
+      <p><a class="btn" href="/contact/">Ask about financing</a></p>
+    </section>
+    <section class="panel">
+      <h2>Layaway</h2>
+      <ul class="plain">
+        <li>25% down holds the piece.</li>
+        <li>Pay the rest in any amounts over up to 90 days.</li>
+        <li>No credit check. No interest. No fees.</li>
+        <li>The piece ships or is picked up when it is paid in full.</li>
+        <li>Cancel any time. The deposit less 10% comes back as store credit.</li>
+      </ul>
+      <p>Custom pieces use a 30% deposit instead and the balance is due at pickup.</p>
+      <p><a class="btn btn-ghost" href="/contact/">Start a layaway</a></p>
+    </section>
+  </div>
+  <div class="prose page-narrow">
+    <h2>Other ways to pay</h2>
+    <p>Bank wire and crypto get {{ site.wire_discount_pct }}% off the listed price. We take cash in the shop, all major cards, Zelle and PayPal. Card payments over $5,000 need a matching ID.</p>
+  </div>
+</div>
+{{ trust() }}
+{% endblock %}

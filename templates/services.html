@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+{% block main %}
+<div class="wrap">
+  <nav class="crumbs" aria-label="Breadcrumb"><a href="/">Home</a><span>Services</span></nav>
+  <header class="page-head">
+    <h1>Repairs, resizing and appraisals.</h1>
+    <p class="lead">Done in our workshop, not sent out. Most jobs are ready the same week. Bring the piece in or mail it insured.</p>
+  </header>
+  <div class="table-wrap page-narrow">
+    <table class="price-table">
+      <thead><tr><th>Service</th><th>Time</th><th>Price</th></tr></thead>
+      <tbody>
+        <tr><td>Ring resizing, up to 2 sizes</td><td>Same day to 3 days</td><td>from $45</td></tr>
+        <tr><td>Chain repair, solder one link</td><td>Same day</td><td>from $35</td></tr>
+        <tr><td>Clasp replacement</td><td>1 to 3 days</td><td>from $60</td></tr>
+        <tr><td>Stone tightening, per prong</td><td>1 to 3 days</td><td>from $20</td></tr>
+        <tr><td>Polish and rhodium plate</td><td>1 to 3 days</td><td>from $50</td></tr>
+        <tr><td>Diamond setting, per stone</td><td>3 to 7 days</td><td>from $25</td></tr>
+        <tr><td>Hand engraving</td><td>3 to 7 days</td><td>from $75</td></tr>
+        <tr><td>Watch battery</td><td>While you wait</td><td>$25</td></tr>
+        <tr><td>Watch service, mechanical</td><td>2 to 4 weeks</td><td>from $450</td></tr>
+        <tr><td>Insurance appraisal</td><td>1 to 3 days</td><td>$95 per piece, free with purchase</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="prose page-narrow">
+    <p>Repairs on pieces we made are free for life if the problem is our workmanship. <a href="/appointment/">Book a visit</a> or call {{ site.phone_display }} for a quote.</p>
+  </div>
+</div>
+{% endblock %}

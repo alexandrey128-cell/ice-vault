@@ -1,0 +1,67 @@
+{% macro card(p) %}
+<a class="card" href="{{ p.url }}" data-price="{{ p.price }}" data-color="{{ p.color }}" data-purity="{{ p.purity }}" data-stone="{{ p.stone or 'none' }}" data-type="{{ p.ptype }}" data-title="{{ p.title }}" data-new="{{ 1 if 'New' in p.badges else 0 }}">
+  <span class="card-media">
+    <img src="{{ p.image }}" alt="{{ p.title }}" loading="lazy" width="600" height="600">
+    {% if p.compare_at %}<span class="badge badge-sale">Sale</span>{% elif 'Best seller' in p.badges %}<span class="badge">Best seller</span>{% elif 'New' in p.badges %}<span class="badge">New</span>{% endif %}
+  </span>
+  <span class="card-metal">{{ p.metal }}</span>
+  <span class="card-title">{{ p.title }}</span>
+  <span class="card-price">{{ p.price|money }}{% if p.compare_at %} <s>{{ p.compare_at|money }}</s>{% endif %}</span>
+</a>
+{% endmacro %}
+
+{% macro row(title, products, href, count, n=4, lead='', label='') %}
+<section class="section">
+  <div class="wrap">
+    <div class="section-head">
+      <div>
+        <h2>{{ title }}</h2>
+        {% if lead %}<p class="lead">{{ lead }}</p>{% endif %}
+      </div>
+      <a class="count-link" href="{{ href }}">Shop all {{ count }}{% if label %} {{ label }}{% endif %}</a>
+    </div>
+    <div class="grid">
+      {% for p in products[:n] %}{{ card(p) }}{% endfor %}
+    </div>
+  </div>
+</section>
+{% endmacro %}
+
+{% macro field(name, label, type='text', required=False, placeholder='', value='', autocomplete='') %}
+<div class="field">
+  <label for="f-{{ name }}">{{ label }}{% if not required %} <span class="optional">optional</span>{% endif %}</label>
+  {% if type == 'textarea' %}
+  <textarea id="f-{{ name }}" name="{{ name }}" rows="5"{% if required %} required{% endif %}{% if placeholder %} placeholder="{{ placeholder }}"{% endif %}>{{ value }}</textarea>
+  {% else %}
+  <input id="f-{{ name }}" name="{{ name }}" type="{{ type }}"{% if required %} required{% endif %}{% if placeholder %} placeholder="{{ placeholder }}"{% endif %}{% if value %} value="{{ value }}"{% endif %}{% if autocomplete %} autocomplete="{{ autocomplete }}"{% endif %}>
+  {% endif %}
+</div>
+{% endmacro %}
+
+{% macro select(name, label, options, required=False) %}
+<div class="field">
+  <label for="f-{{ name }}">{{ label }}</label>
+  <select id="f-{{ name }}" name="{{ name }}"{% if required %} required{% endif %}>
+    {% for o in options %}<option>{{ o }}</option>{% endfor %}
+  </select>
+</div>
+{% endmacro %}
+
+{% macro contact_fields() %}
+<div class="field-row">
+  {{ field('name', 'Your name', required=True, autocomplete='name') }}
+  {{ field('phone', 'Phone', type='tel', required=True, autocomplete='tel') }}
+</div>
+{{ field('email', 'Email', type='email', required=True, autocomplete='email') }}
+{% endmacro %}
+
+{% macro trust() %}
+<section class="trust">
+  <div class="wrap trust-grid">
+    <div><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 7h11v9H3zM14 10h4l3 3v3h-7z" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/><circle cx="7" cy="17" r="1.6" fill="none" stroke="currentColor" stroke-width="1.5"/><circle cx="17.5" cy="17" r="1.6" fill="none" stroke="currentColor" stroke-width="1.5"/></svg><strong>Free insured shipping</strong><span>Two to five business days in the US. Worldwide on request.</span></div>
+    <div><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3l7 3v6c0 4-3 7-7 9-4-2-7-5-7-9V6l7-3Z" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/><path d="M9 12l2 2 4-4" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg><strong>Certified appraisal</strong><span>Every piece ships with a signed appraisal for insurance.</span></div>
+    <div><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 18L18 6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><circle cx="7.5" cy="7.5" r="2.5" fill="none" stroke="currentColor" stroke-width="1.5"/><circle cx="16.5" cy="16.5" r="2.5" fill="none" stroke="currentColor" stroke-width="1.5"/></svg><strong>0% financing and layaway</strong><span>{{ site.financing_months }} months at 0% on approved credit, or 25% down on layaway.</span></div>
+    <div><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12a8 8 0 1 0 2.5-5.8" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><path d="M4 4v5h5" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg><strong>30-day returns</strong><span>Stock pieces, in new condition, full refund. Custom work is final.</span></div>
+  </div>
+</section>
+{% endmacro %}

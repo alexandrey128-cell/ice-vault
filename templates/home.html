@@ -1,0 +1,166 @@
+{% extends "base.html" %}
+{% from "partials/macros.html" import card, row, trust %}
+{% block main %}
+<section class="hero">
+  <div class="wrap hero-grid">
+    <div class="hero-copy">
+      <h1>Ice, cut and set on 47th Street.</h1>
+      <p class="lede">Solid gold chains, diamond pendants, engagement rings, watches and custom pieces. Made in our Diamond District workshop, weighed and appraised before they ship.</p>
+      <div class="hero-actions">
+        <a class="btn" href="/collections/men/">Shop men's</a>
+        <a class="btn btn-ghost" href="/collections/women/">Shop women's</a>
+        <a class="link" href="/custom/">Start a custom project</a>
+      </div>
+      <p class="hero-note">Open today at {{ site.address_short }}. <a href="/appointment/">Book a visit</a> or text <a href="sms:{{ site.sms_tel }}">{{ site.phone_display }}</a>.</p>
+    </div>
+    <div class="hero-art">{{ hero }}</div>
+  </div>
+</section>
+
+{% if site.promo.active %}
+<section class="promo">
+  <div class="wrap promo-row">
+    <p><strong>{{ site.promo.label }}.</strong> {{ site.promo.text }} <code>{{ site.promo.code }}</code>.</p>
+    <a class="link" href="/collections/{{ site.promo.collection }}/">See the sale</a>
+  </div>
+</section>
+{% endif %}
+
+<section class="section">
+  <div class="wrap">
+    <div class="section-head">
+      <h2>Men's</h2>
+      <a class="count-link" href="/collections/men/">Shop all {{ cols['men'].count }}</a>
+    </div>
+    <div class="tiles">
+      {% for c in home.mens %}
+      <a class="tile" href="{{ c.url }}">
+        <span class="tile-media"><img src="{{ c.products[0].image }}" alt="" loading="lazy" width="600" height="600"></span>
+        <span class="tile-name">{{ c.title.replace("Men's ", "") }}</span>
+        <span class="tile-count">{{ c.count }} pieces</span>
+      </a>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+{{ row("Men's chains", cols['mens-chains'].products, cols['mens-chains'].url, cols['mens-chains'].count, 4, "Miami Cuban, rope, tennis and Franco in 10K, 14K and 18K gold.") }}
+{{ row("Men's pendants", cols['mens-pendants'].products, cols['mens-pendants'].url, cols['mens-pendants'].count, 4, "Crosses, medallions, initials and dog tags. Chain included.") }}
+
+<section class="section section-split">
+  <div class="wrap split-grid">
+    <div class="split-copy">
+      <h2>Best sellers</h2>
+      <p class="lead">The pieces our clients come back for. Most ship in two days.</p>
+      <a class="btn btn-ghost" href="/collections/best-sellers/">Shop all {{ cols['best-sellers'].count }}</a>
+    </div>
+    <div class="grid grid-3">
+      {% for p in cols['best-sellers'].products[:6] %}{{ card(p) }}{% endfor %}
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="wrap">
+    <div class="section-head">
+      <h2>Women's</h2>
+      <a class="count-link" href="/collections/women/">Shop all {{ cols['women'].count }}</a>
+    </div>
+    <div class="tiles">
+      {% for c in home.womens %}
+      <a class="tile" href="{{ c.url }}">
+        <span class="tile-media"><img src="{{ c.products[0].image }}" alt="" loading="lazy" width="600" height="600"></span>
+        <span class="tile-name">{{ c.title.replace("Women's ", "") }}</span>
+        <span class="tile-count">{{ c.count }} pieces</span>
+      </a>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+{{ row("Engagement rings", cols['engagement'].products, cols['engagement'].url, cols['engagement'].count, 4, "Ready to ship, or build your own from the setting up.") }}
+{{ row("Women's necklaces", cols['womens-necklaces'].products, cols['womens-necklaces'].url, cols['womens-necklaces'].count, 4, "Tennis, thin Cuban, paperclip and diamond stations.") }}
+
+<section class="section custom-cta">
+  <div class="wrap custom-grid">
+    <div class="custom-copy">
+      <h2>Your idea. Our bench.</h2>
+      <p class="lead">Send a sketch, a photo or a sentence. We draw it, price it and make it in the shop. Most pieces take 3 to 8 weeks.</p>
+      <ol class="steps">
+        <li><strong>Tell us the idea.</strong> Online, by text, or at the counter.</li>
+        <li><strong>Approve the render.</strong> We send a 3D render and a fixed price.</li>
+        <li><strong>We cast, set and polish.</strong> Photos at every stage.</li>
+        <li><strong>Pick it up or we ship it insured.</strong> Appraisal included.</li>
+      </ol>
+      <div class="hero-actions">
+        <a class="btn" href="/custom/">Start a custom project</a>
+        <a class="btn btn-ghost" href="/ring-builder/">Build an engagement ring</a>
+      </div>
+    </div>
+    <div class="custom-gallery">
+      {% for c in custom_projects[:6] %}
+      <a class="gallery-item" href="/custom/gallery/#{{ c.slug }}">
+        <img src="{{ c.image }}" alt="{{ c.title }}" loading="lazy" width="600" height="600">
+        <span>{{ c.title }}</span>
+      </a>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+{{ row("New arrivals", cols['new-arrivals'].products, cols['new-arrivals'].url, cols['new-arrivals'].count, 8, "Fresh from the bench this month.") }}
+{{ row("Watches", cols['watches'].products, cols['watches'].url, cols['watches'].count, 4, "Authenticated in-house. Two-year Ice Vault warranty on every movement.") }}
+
+{{ trust() }}
+
+<section class="section">
+  <div class="wrap">
+    <div class="section-head">
+      <h2>What clients say</h2>
+      <a class="count-link" href="/reviews/">Read all reviews</a>
+    </div>
+    <div class="reviews">
+      {% for r in reviews[:3] %}
+      <blockquote class="review">
+        <p>{{ r.text }}</p>
+        <footer>{{ r.name }}, {{ r.city }}</footer>
+      </blockquote>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+<section class="section visit">
+  <div class="wrap visit-grid">
+    <div>
+      <h2>Visit the showroom</h2>
+      <p class="lead">{{ site.address_line1 }}<br>{{ site.address_line2 }}</p>
+      <dl class="hours">
+        {% for day, hrs in site.hours %}<div><dt>{{ day }}</dt><dd>{{ hrs }}</dd></div>{% endfor %}
+      </dl>
+      <div class="hero-actions">
+        <a class="btn" href="/appointment/">Book an appointment</a>
+        <a class="btn btn-ghost" href="tel:{{ site.phone_tel }}">Call {{ site.phone_display }}</a>
+      </div>
+    </div>
+    <div class="map-frame">
+      <iframe title="Map to Ice Vault" loading="lazy" src="https://www.openstreetmap.org/export/embed.html?bbox={{ site.map_lon - 0.006 }}%2C{{ site.map_lat - 0.003 }}%2C{{ site.map_lon + 0.006 }}%2C{{ site.map_lat + 0.003 }}&amp;layer=mapnik&amp;marker={{ site.map_lat }}%2C{{ site.map_lon }}"></iframe>
+    </div>
+  </div>
+</section>
+
+<section class="section newsletter">
+  <div class="wrap newsletter-row">
+    <div>
+      <h2>First look at new drops</h2>
+      <p class="lead">One email a month. New pieces, sale codes, nothing else.</p>
+    </div>
+    <form class="newsletter-form" data-form="Newsletter signup">
+      <label class="visually-hidden" for="nl-email">Email</label>
+      <input id="nl-email" name="email" type="email" placeholder="you@email.com" required>
+      <button class="btn" type="submit">Sign up</button>
+      <p class="form-status" aria-live="polite"></p>
+    </form>
+  </div>
+</section>
+{% endblock %}

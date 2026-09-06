@@ -1,0 +1,124 @@
+{% extends "base.html" %}
+{% from "partials/macros.html" import field, contact_fields %}
+{% block main %}
+<div class="wrap">
+  <nav class="crumbs" aria-label="Breadcrumb"><a href="/">Home</a><a href="/custom/">Custom</a><span>Ring builder</span></nav>
+  <header class="page-head">
+    <h1>Build an engagement ring.</h1>
+    <p class="lead">Pick a setting, a metal and a diamond. The price updates as you go. When it looks right, send it to us and we hold the price for 14 days.</p>
+  </header>
+  <div class="builder" data-builder>
+    <div class="builder-steps">
+      <section class="builder-step">
+        <h2><span class="step-no">1</span> Setting</h2>
+        <div class="opt-grid opt-grid-3">
+          {% for key, name, base, blurb in settings %}
+          <label class="opt">
+            <input type="radio" name="setting" value="{{ key }}" data-base="{{ base }}"{% if loop.first %} checked{% endif %}>
+            <img src="/img/rings/{{ key }}-round-W-m.svg" alt="" loading="lazy" width="600" height="600">
+            <span class="opt-name">{{ name }}</span>
+            <span class="opt-desc">{{ blurb }}</span>
+            <span class="opt-price">from {{ base|money }}</span>
+          </label>
+          {% endfor %}
+        </div>
+      </section>
+      <section class="builder-step">
+        <h2><span class="step-no">2</span> Metal</h2>
+        <div class="opt-grid opt-grid-6">
+          {% for purity, color in metals %}
+          <label class="opt opt-chip">
+            <input type="radio" name="metal" value="{{ purity }}-{{ color }}" data-purity="{{ purity }}" data-color="{{ color }}" data-mult="{{ 1.0 if purity == '14K' else 1.3 }}"{% if loop.index == 2 %} checked{% endif %}>
+            <span class="swatch swatch-{{ color }}"></span>
+            <span class="opt-name">{{ purity }} {{ color_names[color] }}</span>
+          </label>
+          {% endfor %}
+          <label class="opt opt-chip">
+            <input type="radio" name="metal" value="PT-W" data-purity="Platinum" data-color="W" data-mult="1.6">
+            <span class="swatch swatch-W"></span>
+            <span class="opt-name">Platinum</span>
+          </label>
+        </div>
+      </section>
+      <section class="builder-step">
+        <h2><span class="step-no">3</span> Diamond</h2>
+        <div class="opt-grid opt-grid-8">
+          {% for s in shapes %}
+          <label class="opt opt-shape">
+            <input type="radio" name="shape" value="{{ s }}"{% if loop.first %} checked{% endif %}>
+            <svg viewBox="0 0 40 40" aria-hidden="true" class="shape-{{ s }}"><use href="#shape-{{ s }}"/></svg>
+            <span class="opt-name">{{ s|capitalize }}</span>
+          </label>
+          {% endfor %}
+        </div>
+        <div class="builder-controls">
+          <div class="field">
+            <label for="carat">Carat <output for="carat" data-carat-out>1.50</output></label>
+            <input id="carat" name="carat" type="range" min="0.5" max="5" step="0.05" value="1.5" data-carat>
+          </div>
+          <div class="field">
+            <span class="label">Origin</span>
+            <div class="seg">
+              <label><input type="radio" name="origin" value="lab" checked><span>Lab grown</span></label>
+              <label><input type="radio" name="origin" value="natural"><span>Natural</span></label>
+            </div>
+          </div>
+          <div class="field-row">
+            <div class="field">
+              <label for="dcolor">Color</label>
+              <select id="dcolor" name="dcolor" data-dcolor>
+                {% for c, f in [('D', 1.35), ('E', 1.25), ('F', 1.15), ('G', 1.0), ('H', 0.9), ('I', 0.8), ('J', 0.7)] %}<option value="{{ f }}"{% if c == 'F' %} selected{% endif %}>{{ c }}{% if c == 'D' %} (colorless){% elif c == 'G' %} (near colorless){% endif %}</option>{% endfor %}
+              </select>
+            </div>
+            <div class="field">
+              <label for="dclarity">Clarity</label>
+              <select id="dclarity" name="dclarity" data-dclarity>
+                {% for c, f in [('IF', 1.4), ('VVS1', 1.25), ('VVS2', 1.15), ('VS1', 1.05), ('VS2', 1.0), ('SI1', 0.85)] %}<option value="{{ f }}"{% if c == 'VS1' %} selected{% endif %}>{{ c }}</option>{% endfor %}
+              </select>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+    <aside class="builder-preview">
+      <div class="preview-media"><img src="/img/rings/solitaire-round-W-m.svg" alt="Ring preview" data-preview width="600" height="600"></div>
+      <p class="preview-note">Preview shows the setting, metal and shape. Stone size is approximate.</p>
+      <dl class="summary">
+        <div><dt>Setting</dt><dd data-sum-setting>Solitaire</dd></div>
+        <div><dt>Metal</dt><dd data-sum-metal>14K White Gold</dd></div>
+        <div><dt>Diamond</dt><dd data-sum-diamond>1.50 ct round, lab grown, F VS1</dd></div>
+      </dl>
+      <p class="preview-price"><span data-total>$0</span><small>estimate, final quote within one business day</small></p>
+      <p class="preview-alt">Setting <span data-setting-price>$0</span>, diamond <span data-diamond-price>$0</span>. Or <span data-monthly>$0</span> a month for {{ site.financing_months }} months at 0%.</p>
+      <button class="btn btn-ice" type="button" data-request-open>Request this ring</button>
+      <p class="help">Want a specific stone? <a href="/diamond-search/">Search our diamonds</a> and send us the ID.</p>
+    </aside>
+  </div>
+</div>
+<dialog class="modal" id="request">
+  <form method="dialog" class="modal-close-form"><button class="drawer-close" aria-label="Close">&#x2715;</button></form>
+  <h2>Request this ring</h2>
+  <p class="lead" data-request-summary></p>
+  <form data-form="Engagement ring request">
+    <input type="hidden" name="ring" data-request-field>
+    {{ contact_fields() }}
+    {{ field('size', 'Ring size, if known', placeholder='6') }}
+    {{ field('note', 'Anything else', type='textarea', placeholder='Date you need it by, a stone ID from the diamond search, or an engraving.') }}
+    <button class="btn" type="submit">Send request</button>
+    <p class="form-status" aria-live="polite"></p>
+  </form>
+</dialog>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <symbol id="shape-round" viewBox="0 0 40 40"><circle cx="20" cy="20" r="15" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M20 5v30M5 20h30M9.4 9.4l21.2 21.2M30.6 9.4L9.4 30.6" stroke="currentColor" stroke-opacity=".5"/></symbol>
+    <symbol id="shape-oval" viewBox="0 0 40 40"><ellipse cx="20" cy="20" rx="11" ry="16" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M20 4v32M9 20h22" stroke="currentColor" stroke-opacity=".5"/></symbol>
+    <symbol id="shape-emerald" viewBox="0 0 40 40"><path d="M12 5h16l6 6v18l-6 6H12l-6-6V11z" fill="none" stroke="currentColor" stroke-width="1.5"/><rect x="11" y="10" width="18" height="20" fill="none" stroke="currentColor" stroke-opacity=".5"/></symbol>
+    <symbol id="shape-cushion" viewBox="0 0 40 40"><rect x="6" y="6" width="28" height="28" rx="9" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M20 6v28M6 20h28" stroke="currentColor" stroke-opacity=".5"/></symbol>
+    <symbol id="shape-radiant" viewBox="0 0 40 40"><path d="M11 6h18l5 5v18l-5 5H11l-5-5V11z" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M11 6l9 14 9-14M11 34l9-14 9 14" stroke="currentColor" stroke-opacity=".5" fill="none"/></symbol>
+    <symbol id="shape-pear" viewBox="0 0 40 40"><path d="M20 4c9 9 12 15 12 21a12 12 0 0 1-24 0c0-6 3-12 12-21z" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M20 4v33" stroke="currentColor" stroke-opacity=".5"/></symbol>
+    <symbol id="shape-marquise" viewBox="0 0 40 40"><path d="M20 3c10 8 10 26 0 34-10-8-10-26 0-34z" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M20 3v34" stroke="currentColor" stroke-opacity=".5"/></symbol>
+    <symbol id="shape-princess" viewBox="0 0 40 40"><rect x="7" y="7" width="26" height="26" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M7 7l26 26M33 7L7 33" stroke="currentColor" stroke-opacity=".5"/></symbol>
+  </defs>
+</svg>
+{% endblock %}
+{% block scripts %}<script src="/js/builder.js" defer></script>{% endblock %}
