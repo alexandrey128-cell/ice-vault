@@ -29,6 +29,7 @@ if os.environ.get("SITE_URL"):
 from data.catalog import (CATEGORIES, VIRTUAL_COLLECTIONS, NAV, SECONDARY_NAV, PRODUCTS, CUSTOM_PROJECTS,
                           REVIEWS, FAQ, PRICE_BUCKETS, COLOR_NAMES, STONE_NAMES, money_round)
 import svggen
+from data.photos import assign_photos, FEATURES, RING_SETTING_PHOTOS, photo
 
 TYPE_LABELS = {
     "cuban": "Miami Cuban", "rope": "Rope", "tennis": "Tennis", "franco": "Franco", "box": "Box", "figaro": "Figaro",
@@ -173,8 +174,17 @@ def main():
 
     env = Environment(loader=FileSystemLoader(os.path.join(ROOT, "templates")), autoescape=select_autoescape(["html"]), trim_blocks=True, lstrip_blocks=True)
     env.filters["money"] = money
+    assign_photos(PRODUCTS, CUSTOM_PROJECTS)
     cols = build_collections()
-    env.globals.update(base=BASE, site=SITE, nav=NAV, secondary_nav=SECONDARY_NAV, cols=cols, categories=CATEGORIES, year=datetime.date.today().year,
+    # neighbouring cards should not show the same photo
+    for c in cols.values():
+        prev = None
+        for p in c["products"]:
+            if prev is not None and p["photos"][0]["id"] == prev and len(p["photos"]) > 1:
+                p["photos"] = p["photos"][1:] + p["photos"][:1]
+                p["image"], p["image_large"] = p["photos"][0]["card"], p["photos"][0]["large"]
+            prev = p["photos"][0]["id"]
+    env.globals.update(feat={k: dict(banner=photo(v, 'banner'), large=photo(v, 'large'), card=photo(v, 'card')) for k, v in FEATURES.items()}, ring_photos={k: photo(v, 'large') for k, v in RING_SETTING_PHOTOS.items()}, base=BASE, site=SITE, nav=NAV, secondary_nav=SECONDARY_NAV, cols=cols, categories=CATEGORIES, year=datetime.date.today().year,
                        logo_mark=Markup(svggen.logo_mark()), type_labels=TYPE_LABELS, color_names=COLOR_NAMES, stone_names=STONE_NAMES,
                        product_count=len(PRODUCTS), faq=FAQ, reviews=REVIEWS, custom_projects=CUSTOM_PROJECTS)
 
@@ -188,16 +198,7 @@ def main():
 
     urls = []
 
-    # images
-    for p in PRODUCTS:
-        write(p["image"], svggen.render_product(p))
-    for c in CUSTOM_PROJECTS:
-        write(c["image"], svggen.render_custom(c))
-    for setting, _, _, _ in RING_SETTINGS:
-        for shape in RING_SHAPES:
-            for color in ("Y", "W", "R"):
-                for size, ct in (("s", 0.8), ("m", 1.5), ("l", 2.6)):
-                    write(f"/img/rings/{setting}-{shape}-{color}-{size}.svg", svggen.ring_builder_preview(setting, shape, color, ct))
+    # images: photos are copied from static/img/photos by the static copy above
     write("/favicon.svg", '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 40 40"><rect width="40" height="40" rx="8" fill="#0A0E14"/><g fill="none" stroke="#BFE3FF" stroke-width="1.8"><polygon points="20,5 30,9 35,20 30,31 20,35 10,31 5,20 10,9"/><polygon points="20,12 28,20 20,28 12,20"/></g></svg>')
 
     # home
@@ -205,7 +206,7 @@ def main():
         mens=[cols[s] for s in ("mens-chains", "mens-pendants", "mens-rings", "mens-earrings", "mens-bracelets", "mens-watches")],
         womens=[cols[s] for s in ("womens-necklaces", "womens-pendants", "womens-rings", "womens-earrings", "womens-bracelets", "womens-watches")],
     )
-    urls.append(render("home.html", "/", page=dict(title="Ice Vault | Diamonds and Fine Jewelry, New York", description=SITE["tagline"] + ". Solid gold chains, diamond pendants, engagement rings, watches and custom pieces from our 47th Street workshop.", body_class="home", full_title=True), hero=Markup(svggen.hero_diamond()), home=home))
+    urls.append(render("home.html", "/", page=dict(title="Ice Vault | Diamonds and Fine Jewelry, New York", description=SITE["tagline"] + ". Solid gold chains, diamond pendants, engagement rings, watches and custom pieces from our 47th Street workshop.", body_class="home", full_title=True), home=home))
 
     # collections
     for c in cols.values():

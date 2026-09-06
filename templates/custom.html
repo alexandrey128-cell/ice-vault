@@ -3,11 +3,14 @@
 {% block main %}
 <div class="wrap">
   <nav class="crumbs" aria-label="Breadcrumb"><a href="/">Home</a><span>Custom jewelry</span></nav>
-  <header class="page-head">
+</div>
+<section class="page-hero">
+  <img class="page-hero-img" src="{{ feat['custom-hero'].banner }}" alt="" width="1920" height="1280" fetchpriority="high">
+  <div class="wrap page-hero-copy">
     <h1>Custom jewelry, made with you.</h1>
     <p class="lead">Pendants, rings, chains, bracelets and grillz. You bring the idea. We draw it, price it and make it on 47th Street. Most pieces take 3 to 8 weeks.</p>
-  </header>
-</div>
+  </div>
+</section>
 <section class="section">
   <div class="wrap process-grid">
     <ol class="steps steps-big">
@@ -72,7 +75,7 @@
     <div class="grid grid-gallery">
       {% for c in custom_projects[:8] %}
       <a class="gallery-item" href="/custom/gallery/#{{ c.slug }}">
-        <img src="{{ c.image }}" alt="{{ c.title }}" loading="lazy" width="600" height="600">
+        <img src="{{ c.image }}" alt="{{ c.title }}" loading="lazy" width="640" height="800">
         <span>{{ c.title }}</span>
       </a>
       {% endfor %}

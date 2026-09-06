@@ -9,7 +9,7 @@
   <div class="grid grid-gallery gallery-page">
     {% for c in custom_projects %}
     <article class="gallery-card" id="{{ c.slug }}">
-      <img src="{{ c.image }}" alt="{{ c.title }}" loading="lazy" width="600" height="600">
+      <img src="{{ c.image }}" alt="{{ c.title }}" loading="lazy" width="640" height="800">
       <h2>{{ c.title }}</h2>
       <p>{{ c.blurb }}</p>
       <p class="gallery-price">{{ c.price|money }}</p>

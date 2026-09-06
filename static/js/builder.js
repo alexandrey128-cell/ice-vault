@@ -32,7 +32,7 @@
     const dPrice = diamondPrice(s);
     const total = settingPrice + dPrice;
     const size = s.carat < 1.1 ? 's' : s.carat < 2.2 ? 'm' : 'l';
-    $('[data-preview]').src = BASE + '/img/rings/' + s.setting + '-' + s.shape + '-' + s.color + '-' + size + '.svg';
+    const chosen = $('input[name=setting]:checked').closest('.opt').querySelector('img'); if (chosen) $('[data-preview]').src = chosen.dataset.photo || chosen.src;
     $('[data-carat-out]').textContent = s.carat.toFixed(2);
     $('[data-sum-setting]').textContent = SETTING_NAMES[s.setting];
     $('[data-sum-metal]').textContent = s.purity === 'Platinum' ? 'Platinum' : s.purity + ' ' + COLOR_NAMES[s.color];

@@ -1,19 +1,17 @@
 {% extends "base.html" %}
-{% from "partials/macros.html" import card, row, trust %}
+{% from "partials/macros.html" import card, row, trust, banner %}
 {% block main %}
 <section class="hero">
-  <div class="wrap hero-grid">
-    <div class="hero-copy">
-      <h1>Ice, cut and set on 47th Street.</h1>
-      <p class="lede">Solid gold chains, diamond pendants, engagement rings, watches and custom pieces. Made in our Diamond District workshop, weighed and appraised before they ship.</p>
-      <div class="hero-actions">
-        <a class="btn" href="/collections/men/">Shop men's</a>
-        <a class="btn btn-ghost" href="/collections/women/">Shop women's</a>
-        <a class="link" href="/custom/">Start a custom project</a>
-      </div>
-      <p class="hero-note">Open today at {{ site.address_short }}. <a href="/appointment/">Book a visit</a> or text <a href="sms:{{ site.sms_tel }}">{{ site.phone_display }}</a>.</p>
+  <img class="hero-bg" src="{{ feat.hero.banner }}" alt="" width="1920" height="1280" fetchpriority="high">
+  <div class="wrap hero-copy">
+    <h1>Ice, cut and set on 47th Street.</h1>
+    <p class="lede">Solid gold chains, diamond pendants, engagement rings, watches and custom pieces. Made in our Diamond District workshop, weighed and appraised before they ship.</p>
+    <div class="hero-actions">
+      <a class="btn" href="/collections/men/">Shop men's</a>
+      <a class="btn btn-ghost" href="/collections/women/">Shop women's</a>
+      <a class="link" href="/custom/">Start a custom project</a>
     </div>
-    <div class="hero-art">{{ hero }}</div>
+    <p class="hero-note">Open today at {{ site.address_short }}. <a href="/appointment/">Book a visit</a> or text <a href="sms:{{ site.sms_tel }}">{{ site.phone_display }}</a>.</p>
   </div>
 </section>
 
@@ -35,9 +33,8 @@
     <div class="tiles">
       {% for c in home.mens %}
       <a class="tile" href="{{ c.url }}">
-        <span class="tile-media"><img src="{{ c.products[0].image }}" alt="" loading="lazy" width="600" height="600"></span>
-        <span class="tile-name">{{ c.title.replace("Men's ", "") }}</span>
-        <span class="tile-count">{{ c.count }} pieces</span>
+        <img src="{{ c.products[0].photos[0].card }}" alt="" loading="lazy" width="640" height="800">
+        <span class="tile-text"><span class="tile-name">{{ c.title.replace("Men's ", "") }}</span><span class="tile-count">{{ c.count }} pieces</span></span>
       </a>
       {% endfor %}
     </div>
@@ -45,6 +42,20 @@
 </section>
 
 {{ row("Men's chains", cols['mens-chains'].products, cols['mens-chains'].url, cols['mens-chains'].count, 4, "Miami Cuban, rope, tennis and Franco in 10K, 14K and 18K gold.") }}
+
+<section class="section">
+  <div class="wrap look-grid">
+    <a class="look" href="/collections/men/">
+      <img src="{{ feat['look-men'].large }}" alt="" loading="lazy" width="1280" height="1600">
+      <span class="look-copy"><span class="look-eyebrow">For him</span><span class="look-title">Cuban, rope, Franco. Solid gold, worn daily.</span><span class="btn btn-sm">Shop men's</span></span>
+    </a>
+    <a class="look" href="/collections/women/">
+      <img src="{{ feat['look-women'].large }}" alt="" loading="lazy" width="1280" height="1600">
+      <span class="look-copy"><span class="look-eyebrow">For her</span><span class="look-title">Tennis necklaces, layered gold, diamonds that catch the room.</span><span class="btn btn-sm">Shop women's</span></span>
+    </a>
+  </div>
+</section>
+
 {{ row("Men's pendants", cols['mens-pendants'].products, cols['mens-pendants'].url, cols['mens-pendants'].count, 4, "Crosses, medallions, initials and dog tags. Chain included.") }}
 
 <section class="section section-split">
@@ -69,41 +80,52 @@
     <div class="tiles">
       {% for c in home.womens %}
       <a class="tile" href="{{ c.url }}">
-        <span class="tile-media"><img src="{{ c.products[0].image }}" alt="" loading="lazy" width="600" height="600"></span>
-        <span class="tile-name">{{ c.title.replace("Women's ", "") }}</span>
-        <span class="tile-count">{{ c.count }} pieces</span>
+        <img src="{{ c.products[0].photos[0].card }}" alt="" loading="lazy" width="640" height="800">
+        <span class="tile-text"><span class="tile-name">{{ c.title.replace("Women's ", "") }}</span><span class="tile-count">{{ c.count }} pieces</span></span>
       </a>
       {% endfor %}
     </div>
   </div>
 </section>
 
-{{ row("Engagement rings", cols['engagement'].products, cols['engagement'].url, cols['engagement'].count, 4, "Ready to ship, or build your own from the setting up.") }}
+<section class="editorial">
+  <div class="wrap editorial-grid">
+    <div class="editorial-media"><img src="{{ feat.engagement.large }}" alt="Solitaire diamond ring" loading="lazy" width="1280" height="1600"></div>
+    <div class="editorial-copy">
+      <h2>The ring, from the setting up.</h2>
+      <p class="lead">Choose a setting, a metal and a diamond. See the price as you build. We cast it, set it and hand it to you in a wooden box within three weeks.</p>
+      <div class="hero-actions">
+        <a class="btn" href="/ring-builder/">Build an engagement ring</a>
+        <a class="btn btn-ghost" href="/collections/engagement/">Ready to ship</a>
+      </div>
+      <dl class="facts">
+        <div><dt>Natural or lab</dt><dd>GIA or IGI report on every center stone.</dd></div>
+        <div><dt>Made to size</dt><dd>Free resizing for life.</dd></div>
+        <div><dt>Price held</dt><dd>14 days from your request.</dd></div>
+      </dl>
+    </div>
+  </div>
+</section>
+
 {{ row("Women's necklaces", cols['womens-necklaces'].products, cols['womens-necklaces'].url, cols['womens-necklaces'].count, 4, "Tennis, thin Cuban, paperclip and diamond stations.") }}
 
-<section class="section custom-cta">
-  <div class="wrap custom-grid">
-    <div class="custom-copy">
-      <h2>Your idea. Our bench.</h2>
-      <p class="lead">Send a sketch, a photo or a sentence. We draw it, price it and make it in the shop. Most pieces take 3 to 8 weeks.</p>
-      <ol class="steps">
-        <li><strong>Tell us the idea.</strong> Online, by text, or at the counter.</li>
-        <li><strong>Approve the render.</strong> We send a 3D render and a fixed price.</li>
-        <li><strong>We cast, set and polish.</strong> Photos at every stage.</li>
-        <li><strong>Pick it up or we ship it insured.</strong> Appraisal included.</li>
-      </ol>
-      <div class="hero-actions">
-        <a class="btn" href="/custom/">Start a custom project</a>
-        <a class="btn btn-ghost" href="/ring-builder/">Build an engagement ring</a>
+<section class="section workshop">
+  <div class="wrap">
+    <div class="section-head">
+      <div>
+        <h2>Your idea. Our bench.</h2>
+        <p class="lead">Send a sketch, a photo or a sentence. We draw it, price it and make it in the shop. Most pieces take 3 to 8 weeks.</p>
       </div>
+      <a class="count-link" href="/custom/gallery/">See past projects</a>
     </div>
-    <div class="custom-gallery">
-      {% for c in custom_projects[:6] %}
-      <a class="gallery-item" href="/custom/gallery/#{{ c.slug }}">
-        <img src="{{ c.image }}" alt="{{ c.title }}" loading="lazy" width="600" height="600">
-        <span>{{ c.title }}</span>
-      </a>
-      {% endfor %}
+    <div class="workshop-grid">
+      <figure><img src="{{ feat.sketch.large }}" alt="Jewelry design sketches" loading="lazy" width="1280" height="853"><figcaption><strong>Tell us the idea.</strong> A sketch on a napkin is enough. We send a render and a fixed price within 3 days.</figcaption></figure>
+      <figure><img src="{{ feat.torch.large }}" alt="Jeweler soldering gold at the bench" loading="lazy" width="1280" height="853"><figcaption><strong>We cast, set and polish.</strong> Everything happens in our workshop on 47th Street. Photos at every stage.</figcaption></figure>
+      <figure><img src="{{ feat.loupe.large }}" alt="Diamonds under a loupe" loading="lazy" width="1280" height="853"><figcaption><strong>Checked under the loupe.</strong> Every stone tight, every piece weighed, then appraised and shipped insured.</figcaption></figure>
+    </div>
+    <div class="hero-actions">
+      <a class="btn" href="/custom/">Start a custom project</a>
+      <a class="btn btn-ghost" href="/appointment/">Book a visit</a>
     </div>
   </div>
 </section>
@@ -143,8 +165,8 @@
         <a class="btn btn-ghost" href="tel:{{ site.phone_tel }}">Call {{ site.phone_display }}</a>
       </div>
     </div>
-    <div class="map-frame">
-      <iframe title="Map to Ice Vault" loading="lazy" src="https://www.openstreetmap.org/export/embed.html?bbox={{ site.map_lon - 0.006 }}%2C{{ site.map_lat - 0.003 }}%2C{{ site.map_lon + 0.006 }}%2C{{ site.map_lat + 0.003 }}&amp;layer=mapnik&amp;marker={{ site.map_lat }}%2C{{ site.map_lon }}"></iframe>
+    <div class="visit-media">
+      <img src="{{ feat.showroom.large }}" alt="Jewelry on display in the showroom" loading="lazy" width="1280" height="853">
     </div>
   </div>
 </section>

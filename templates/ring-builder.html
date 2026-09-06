@@ -3,9 +3,12 @@
 {% block main %}
 <div class="wrap">
   <nav class="crumbs" aria-label="Breadcrumb"><a href="/">Home</a><a href="/custom/">Custom</a><span>Ring builder</span></nav>
-  <header class="page-head">
-    <h1>Build an engagement ring.</h1>
-    <p class="lead">Pick a setting, a metal and a diamond. The price updates as you go. When it looks right, send it to us and we hold the price for 14 days.</p>
+  <header class="page-head page-head-photo">
+    <div>
+      <h1>Build an engagement ring.</h1>
+      <p class="lead">Pick a setting, a metal and a diamond. The price updates as you go. When it looks right, send it to us and we hold the price for 14 days.</p>
+    </div>
+    <img src="{{ feat.builder.large }}" alt="" width="1280" height="1600" loading="eager">
   </header>
   <div class="builder" data-builder>
     <div class="builder-steps">
@@ -15,7 +18,7 @@
           {% for key, name, base, blurb in settings %}
           <label class="opt">
             <input type="radio" name="setting" value="{{ key }}" data-base="{{ base }}"{% if loop.first %} checked{% endif %}>
-            <img src="/img/rings/{{ key }}-round-W-m.svg" alt="" loading="lazy" width="600" height="600">
+            <img src="{{ ring_photos[key] }}" alt="" loading="lazy" width="1280" height="1600" data-photo="{{ ring_photos[key] }}">
             <span class="opt-name">{{ name }}</span>
             <span class="opt-desc">{{ blurb }}</span>
             <span class="opt-price">from {{ base|money }}</span>
@@ -81,8 +84,8 @@
       </section>
     </div>
     <aside class="builder-preview">
-      <div class="preview-media"><img src="/img/rings/solitaire-round-W-m.svg" alt="Ring preview" data-preview width="600" height="600"></div>
-      <p class="preview-note">Preview shows the setting, metal and shape. Stone size is approximate.</p>
+      <div class="preview-media"><img src="{{ ring_photos['solitaire'] }}" alt="Ring preview" data-preview width="1280" height="1600"></div>
+      <p class="preview-note">Photo shows the setting style. A render of your exact ring, metal and stone comes with the quote.</p>
       <dl class="summary">
         <div><dt>Setting</dt><dd data-sum-setting>Solitaire</dd></div>
         <div><dt>Metal</dt><dd data-sum-metal>14K White Gold</dd></div>

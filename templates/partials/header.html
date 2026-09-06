@@ -31,7 +31,7 @@
             {% if item.label == "Men's" or item.label == "Women's" %}
               {% set feat = (cols['men'] if item.label == "Men's" else cols['women']).products[0] %}
               <a class="mega-feature" href="{{ feat.url }}">
-                <img src="{{ feat.image }}" alt="" loading="lazy" width="600" height="600">
+                <img src="{{ feat.photos[0].card }}" alt="" loading="lazy" width="640" height="800">
                 <span class="mega-feature-text"><span class="mega-feature-label">Best seller</span>{{ feat.title }}<strong>{{ feat.price|money }}</strong></span>
               </a>
             {% endif %}

@@ -49,14 +49,14 @@
   $$('[data-drawer-close]').forEach(b => b.addEventListener('click', () => openDrawer(false)));
   document.addEventListener('keydown', e => { if (e.key === 'Escape') { openDrawer(false); closeFilters(); } });
 
-  /* mega menus on touch: first tap opens, second follows the link */
-  if (window.matchMedia('(hover: none)').matches) {
-    $$('.has-mega > a').forEach(a => a.addEventListener('click', e => {
-      const li = a.parentElement;
-      if (!li.classList.contains('is-open')) { e.preventDefault(); $$('.has-mega.is-open').forEach(o => o.classList.remove('is-open')); li.classList.add('is-open'); }
-    }));
-    document.addEventListener('click', e => { if (!e.target.closest('.has-mega')) $$('.has-mega.is-open').forEach(o => o.classList.remove('is-open')); });
-  }
+  /* mega menus: hover opens on pointer devices; on touch the first tap opens and the second follows the link */
+  const touchOnly = window.matchMedia('(hover: none)').matches;
+  $$('.has-mega > a').forEach(a => a.addEventListener('click', e => {
+    const li = a.parentElement;
+    if (touchOnly && !li.classList.contains('is-open')) { e.preventDefault(); $$('.has-mega.is-open').forEach(o => o.classList.remove('is-open')); li.classList.add('is-open'); }
+  }));
+  document.addEventListener('click', e => { if (!e.target.closest('.has-mega')) $$('.has-mega.is-open').forEach(o => o.classList.remove('is-open')); });
+  $$('.has-mega').forEach(li => li.addEventListener('mouseleave', () => li.classList.remove('is-open')));
 
   /* ---------- collection filters ---------- */
   const grid = $('[data-collection-grid]');
@@ -133,7 +133,7 @@
     }
     $$('.thumb').forEach(t => t.addEventListener('click', () => {
       $$('.thumb').forEach(x => x.classList.remove('is-active')); t.classList.add('is-active');
-      const m = $('[data-gallery-main]'); m.className = 'gallery-main view-' + t.dataset.view;
+      const img = $('[data-gallery-img]'); if (img && t.dataset.src) img.src = t.dataset.src;
     }));
     $('[data-options]').addEventListener('submit', e => {
       e.preventDefault();

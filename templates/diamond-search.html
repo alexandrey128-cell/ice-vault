@@ -3,9 +3,12 @@
 {% block main %}
 <div class="wrap">
   <nav class="crumbs" aria-label="Breadcrumb"><a href="/">Home</a><a href="/custom/">Custom</a><span>Diamond search</span></nav>
-  <header class="page-head">
-    <h1>Diamond search.</h1>
-    <p class="lead">Loose natural and lab-grown diamonds from our inventory and partner cutters. Every stone over 0.5 carats has a GIA or IGI report. Pick one and we set it in any ring, pendant or pair of studs.</p>
+  <header class="page-head page-head-photo">
+    <div>
+      <h1>Diamond search.</h1>
+      <p class="lead">Loose natural and lab-grown diamonds from our inventory and partner cutters. Every stone over 0.5 carats has a GIA or IGI report. Pick one and we set it in any ring, pendant or pair of studs.</p>
+    </div>
+    <img src="{{ feat.diamonds.large }}" alt="" width="1280" height="853" loading="eager">
   </header>
   <div class="ds" data-ds>
     <form class="ds-controls" id="ds-form">

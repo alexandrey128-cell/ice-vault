@@ -1,7 +1,8 @@
-{% macro card(p) %}
+{% macro card(p, eager=False) %}
 <a class="card" href="{{ p.url }}" data-price="{{ p.price }}" data-color="{{ p.color }}" data-purity="{{ p.purity }}" data-stone="{{ p.stone or 'none' }}" data-type="{{ p.ptype }}" data-title="{{ p.title }}" data-new="{{ 1 if 'New' in p.badges else 0 }}">
   <span class="card-media">
-    <img src="{{ p.image }}" alt="{{ p.title }}" loading="lazy" width="600" height="600">
+    <img class="card-img" src="{{ p.photos[0].card }}" alt="{{ p.title }}" {% if not eager %}loading="lazy" {% endif %}width="640" height="800">
+    {% if p.photos|length > 1 %}<img class="card-img card-img-alt" src="{{ p.photos[1].card }}" alt="" loading="lazy" width="640" height="800">{% endif %}
     {% if p.compare_at %}<span class="badge badge-sale">Sale</span>{% elif 'Best seller' in p.badges %}<span class="badge">Best seller</span>{% elif 'New' in p.badges %}<span class="badge">New</span>{% endif %}
   </span>
   <span class="card-metal">{{ p.metal }}</span>
@@ -62,6 +63,17 @@
     <div><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3l7 3v6c0 4-3 7-7 9-4-2-7-5-7-9V6l7-3Z" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/><path d="M9 12l2 2 4-4" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg><strong>Certified appraisal</strong><span>Every piece ships with a signed appraisal for insurance.</span></div>
     <div><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 18L18 6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><circle cx="7.5" cy="7.5" r="2.5" fill="none" stroke="currentColor" stroke-width="1.5"/><circle cx="16.5" cy="16.5" r="2.5" fill="none" stroke="currentColor" stroke-width="1.5"/></svg><strong>0% financing and layaway</strong><span>{{ site.financing_months }} months at 0% on approved credit, or 25% down on layaway.</span></div>
     <div><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12a8 8 0 1 0 2.5-5.8" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><path d="M4 4v5h5" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg><strong>30-day returns</strong><span>Stock pieces, in new condition, full refund. Custom work is final.</span></div>
+  </div>
+</section>
+{% endmacro %}
+
+{% macro banner(photo, title, text, href, cta, align='left', tall=False) %}
+<section class="banner{% if tall %} banner-tall{% endif %} banner-{{ align }}">
+  <img class="banner-img" src="{{ photo }}" alt="" loading="lazy" width="1920" height="1080">
+  <div class="wrap banner-copy">
+    <h2>{{ title }}</h2>
+    <p class="lead">{{ text }}</p>
+    <a class="btn" href="{{ href }}">{{ cta }}</a>
   </div>
 </section>
 {% endmacro %}
