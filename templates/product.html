@@ -1,6 +1,7 @@
 {% extends "base.html" %}
 {% from "partials/macros.html" import card, trust, field, contact_fields %}
-{% block head %}<script type="application/ld+json">{{ jsonld }}</script>{% endblock %}
+{% block head %}<script type="application/ld+json">{{ jsonld }}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"{{ site.domain }}/"},{"@type":"ListItem","position":2,"name":"{{ col.title }}","item":"{{ site.domain }}{{ col.url }}"},{"@type":"ListItem","position":3,"name":"{{ p.title }}","item":"{{ site.domain }}{{ p.url }}"}]}</script>{% endblock %}
 {% block main %}
 <div class="wrap">
   <nav class="crumbs" aria-label="Breadcrumb"><a href="/">Home</a><a href="/collections/{{ 'men' if p.gender == 'mens' else 'women' }}/">{{ "Men's" if p.gender == 'mens' else "Women's" }}</a><a href="{{ col.url }}">{{ col.title.replace("Men's ", "").replace("Women's ", "") }}</a><span>{{ p.title }}</span></nav>
@@ -8,7 +9,7 @@
     <script type="application/json" id="product-data">{{ pdata }}</script>
     <div class="gallery">
       <div class="gallery-main" data-gallery-main>
-        <img src="{{ p.photos[0].large }}" alt="{{ p.title }}" width="1280" height="1600" data-gallery-img>
+        <img src="{{ p.photos[0].large }}" srcset="{{ p.photos[0].card }} 640w, {{ p.photos[0].large }} 1280w" sizes="(max-width: 1000px) 100vw, 55vw" alt="{{ p.title }}" width="1280" height="1600" fetchpriority="high" data-gallery-img>
       </div>
       <div class="thumbs" role="tablist" aria-label="Photos">
         {% for ph in p.photos %}
@@ -20,6 +21,7 @@
     <div class="buy">
       <p class="pdp-metal">{{ p.metal }}{% if p.stone_name %}, {{ p.stone_name|lower }}s{% endif %}</p>
       <h1>{{ p.title }}</h1>
+      <p class="pdp-promise">Weighed. Appraised. Insured.</p>
       <p class="pdp-price"><span data-price>{{ p.price|money }}</span>{% if p.compare_at %} <s data-compare>{{ p.compare_at|money }}</s>{% endif %}</p>
       <p class="pdp-alt">Pay by wire or crypto: <strong data-wire-price>{{ (p.price * (100 - site.wire_discount_pct) / 100)|round|int|money }}</strong>. Or <strong data-monthly>{{ (p.price / site.financing_months)|round|int|money }}</strong> a month for {{ site.financing_months }} months at 0%. <a href="/financing/">How financing works</a></p>
       <form class="options" data-options>
@@ -38,6 +40,7 @@
         <div class="buy-actions">
           <button class="btn btn-ice" type="submit" data-add>Add to cart</button>
           <button class="btn btn-ghost" type="button" data-offer-open>Make an offer</button>
+          <a class="btn btn-ghost btn-text" href="sms:{{ site.sms_tel }}?&body={{ ('Hi Ice Vault, I am interested in ' ~ p.title ~ ' (' ~ p.sku ~ '). ' ~ site.domain ~ p.url)|urlencode }}">Text a jeweler about this piece</a>
         </div>
       </form>
       <p class="stock">In stock. Ships in 2 to 5 business days. <a href="/shipping-returns/">Shipping and returns</a></p>

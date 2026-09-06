@@ -1,7 +1,7 @@
 {% macro card(p, eager=False) %}
 <a class="card" href="{{ p.url }}" data-price="{{ p.price }}" data-color="{{ p.color }}" data-purity="{{ p.purity }}" data-stone="{{ p.stone or 'none' }}" data-type="{{ p.ptype }}" data-title="{{ p.title }}" data-new="{{ 1 if 'New' in p.badges else 0 }}">
   <span class="card-media">
-    <img class="card-img" src="{{ p.photos[0].card }}" alt="{{ p.title }}" {% if not eager %}loading="lazy" {% endif %}width="640" height="800">
+    <img class="card-img" src="{{ p.photos[0].card }}" srcset="{{ p.photos[0].card }} 640w, {{ p.photos[0].large }} 1280w" sizes="(max-width: 720px) 50vw, (max-width: 1200px) 33vw, 340px" alt="{{ p.title }}" {% if not eager %}loading="lazy" {% endif %}decoding="async" width="640" height="800">
     {% if p.photos|length > 1 %}<img class="card-img card-img-alt" src="{{ p.photos[1].card }}" alt="" loading="lazy" width="640" height="800">{% endif %}
     {% if p.compare_at %}<span class="badge badge-sale">Sale</span>{% elif 'Best seller' in p.badges %}<span class="badge">Best seller</span>{% elif 'New' in p.badges %}<span class="badge">New</span>{% endif %}
   </span>

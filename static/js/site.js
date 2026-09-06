@@ -26,16 +26,21 @@
       const key = item.slug + '|' + Object.values(item.options || {}).join('|');
       const found = items.find(i => i.key === key);
       if (found) found.qty += item.qty; else items.push(Object.assign({ key }, item));
-      cart.set(items);
+      cart.set(items); cart.badge(true);
     },
     remove(key) { cart.set(cart.get().filter(i => i.key !== key)); },
     qty(key, q) { const items = cart.get(); const it = items.find(i => i.key === key); if (it) { it.qty = Math.max(1, Math.min(10, q | 0)); cart.set(items); } },
     count() { return cart.get().reduce((n, i) => n + i.qty, 0); },
     total() { return cart.get().reduce((n, i) => n + i.qty * i.price, 0); },
-    badge() { const n = cart.count(); $$('[data-cart-count]').forEach(el => { el.textContent = n; if (n) delete el.dataset.zero; else el.dataset.zero = '1'; }); },
+    badge(pulse) { const n = cart.count(); $$('[data-cart-count]').forEach(el => { el.textContent = n; if (n) delete el.dataset.zero; else el.dataset.zero = '1'; if (pulse) { el.classList.remove('is-pulse'); void el.offsetWidth; el.classList.add('is-pulse'); } }); },
   };
   cart.badge();
   window.IVCart = cart;
+
+  /* header: transparent over the home hero until the first scroll */
+  const header = $('.site-header');
+  function headerState() { header && header.classList.toggle('is-scrolled', window.scrollY > 24); }
+  headerState(); window.addEventListener('scroll', headerState, { passive: true });
 
   /* ---------- drawer ---------- */
   const drawer = $('#drawer'), scrim = $('.scrim');
@@ -93,7 +98,7 @@
         history.replaceState(null, '', location.pathname + (q.toString() ? '?' + q : ''));
       }
     }
-    form.addEventListener('change', () => apply(true));
+    form.addEventListener('change', () => { grid.classList.add('is-filtering'); setTimeout(() => { apply(true); grid.classList.remove('is-filtering'); }, 120); });
     $$('[data-filters-clear]').forEach(b => b.addEventListener('click', () => { form.reset(); apply(true); }));
     $$('[data-filters-open]').forEach(b => b.addEventListener('click', () => filtersPanel.classList.add('is-open')));
     $$('[data-filters-close]').forEach(b => b.addEventListener('click', closeFilters));
@@ -131,15 +136,24 @@
         if (len) setPrice(Math.round(data.price * len / data.length / 10) * 10);
       });
     }
+    const main = $('[data-gallery-main]'), mainImg = $('[data-gallery-img]');
     $$('.thumb').forEach(t => t.addEventListener('click', () => {
       $$('.thumb').forEach(x => x.classList.remove('is-active')); t.classList.add('is-active');
-      const img = $('[data-gallery-img]'); if (img && t.dataset.src) img.src = t.dataset.src;
+      if (!mainImg || !t.dataset.src || mainImg.src.endsWith(t.dataset.src)) return;
+      main.classList.add('is-swapping');
+      setTimeout(() => { mainImg.srcset = ''; mainImg.src = t.dataset.src; mainImg.onload = () => main.classList.remove('is-swapping'); }, 200);
     }));
+    if (main && window.matchMedia('(hover: hover)').matches) {
+      main.addEventListener('mousemove', e => { const r = main.getBoundingClientRect(); mainImg.style.transformOrigin = ((e.clientX - r.left) / r.width * 100) + '% ' + ((e.clientY - r.top) / r.height * 100) + '%'; });
+      main.addEventListener('mouseenter', () => main.classList.add('is-zoomed'));
+      main.addEventListener('mouseleave', () => main.classList.remove('is-zoomed'));
+    }
     $('[data-options]').addEventListener('submit', e => {
       e.preventDefault();
       const options = {};
       $$('[data-option]').forEach(s => { options[s.dataset.option] = s.value; });
       cart.add({ slug: data.slug, title: data.title, price, image: data.image, url: data.url, sku: data.sku, options, qty: +($('[data-qty]').value || 1) });
+      const addBtn = $('[data-add]'); if (addBtn) { addBtn.textContent = 'Added'; addBtn.classList.add('is-added'); setTimeout(() => { addBtn.textContent = 'Add to cart'; addBtn.classList.remove('is-added'); }, 1600); }
       toast('Added to cart. <a href="' + BASE + '/cart/">View cart</a>');
     });
     const offer = $('#offer');

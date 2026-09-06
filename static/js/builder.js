@@ -38,7 +38,10 @@
     $('[data-sum-metal]').textContent = s.purity === 'Platinum' ? 'Platinum' : s.purity + ' ' + COLOR_NAMES[s.color];
     const dia = s.carat.toFixed(2) + ' ct ' + s.shape + ', ' + (s.origin === 'lab' ? 'lab grown' : 'natural') + ', ' + s.colorG + ' ' + s.clarG;
     $('[data-sum-diamond]').textContent = dia;
-    $('[data-total]').textContent = money(total);
+    const totalEl = $('[data-total]'); const from = +(totalEl.dataset.value || 0); totalEl.dataset.value = total;
+    if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches && from) {
+      const t0 = performance.now(); const step = now => { const k = Math.min(1, (now - t0) / 300); const e = 1 - Math.pow(1 - k, 3); totalEl.textContent = money(from + (total - from) * e); if (k < 1) requestAnimationFrame(step); }; requestAnimationFrame(step);
+    } else totalEl.textContent = money(total);
     $('[data-setting-price]').textContent = money(settingPrice);
     $('[data-diamond-price]').textContent = money(dPrice);
     $('[data-monthly]').textContent = money(total / months);

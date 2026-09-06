@@ -1,8 +1,13 @@
 {% extends "base.html" %}
 {% from "partials/macros.html" import card, row, trust, banner %}
+{% block head %}
+<link rel="preload" as="image" href="{{ feat.hero.banner }}" fetchpriority="high">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"JewelryStore","name":"{{ site.name }}","url":"{{ site.domain }}/","telephone":"{{ site.phone_tel }}","email":"{{ site.email }}","address":{"@type":"PostalAddress","streetAddress":"{{ site.address_line1 }}","addressLocality":"New York","addressRegion":"NY","postalCode":"10036","addressCountry":"US"},"geo":{"@type":"GeoCoordinates","latitude":{{ site.map_lat }},"longitude":{{ site.map_lon }}},"openingHours":["Mo-Fr 10:00-18:30","Sa 11:00-17:00"],"priceRange":"$$$"}</script>
+{% endblock %}
 {% block main %}
 <section class="hero">
-  <img class="hero-bg" src="{{ feat.hero.banner }}" alt="" width="1920" height="1280" fetchpriority="high">
+  <img class="hero-bg" src="{{ feat.hero.banner }}" alt="" width="1920" height="1280" fetchpriority="high" decoding="async">
+  <div class="hero-light" aria-hidden="true"></div>
   <div class="wrap hero-copy">
     <h1>Ice, cut and set on 47th Street.</h1>
     <p class="lede">Solid gold chains, diamond pendants, engagement rings, watches and custom pieces. Made in our Diamond District workshop, weighed and appraised before they ship.</p>
@@ -11,18 +16,18 @@
       <a class="btn btn-ghost" href="/collections/women/">Shop women's</a>
       <a class="link" href="/custom/">Start a custom project</a>
     </div>
-    <p class="hero-note">Open today at {{ site.address_short }}. <a href="/appointment/">Book a visit</a> or text <a href="sms:{{ site.sms_tel }}">{{ site.phone_display }}</a>.</p>
+    <p class="hero-note">{{ site.address_short }}. <a href="/appointment/">Book a visit</a> or text <a href="sms:{{ site.sms_tel }}">{{ site.phone_display }}</a>.</p>
   </div>
 </section>
 
-{% if site.promo.active %}
-<section class="promo">
-  <div class="wrap promo-row">
-    <p><strong>{{ site.promo.label }}.</strong> {{ site.promo.text }} <code>{{ site.promo.code }}</code>.</p>
-    <a class="link" href="/collections/{{ site.promo.collection }}/">See the sale</a>
+<section class="promise">
+  <div class="wrap promise-row">
+    <div><strong>Weighed to 0.1 gram</strong>The weight on the listing is the weight in the box.</div>
+    <div><strong>GIA or IGI on stones over 0.5 carat</strong>Lab or natural, the report comes with the piece.</div>
+    <div><strong>Insured to your door</strong>Signed appraisal inside. Signature on delivery.</div>
+    {% if site.promo.active %}<a class="link" href="/collections/{{ site.promo.collection }}/">{{ site.promo.label }}: {{ site.promo.text|lower }} {{ site.promo.code }}</a>{% endif %}
   </div>
 </section>
-{% endif %}
 
 <section class="section">
   <div class="wrap">

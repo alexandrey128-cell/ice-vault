@@ -1,0 +1,292 @@
+<title>Ice Vault Blueprint</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@75..125,400..700&family=Bodoni+Moda:ital,opsz,wght@0,6..96,400..700;1,6..96,400..700&display=swap">
+<style>
+:root {
+  --bg: #F4F6F9; --panel: #FFFFFF; --ink: #0E1420; --ink-2: #4A5668; --ink-3: #7C8899; --line: #D9E0E8; --line-strong: #B9C4D1;
+  --accent: #1F6FB2; --accent-soft: #E3F0FB; --gold: #B8923F; --warn: #B14A4A;
+  --serif: "Bodoni Moda", "Didot", Georgia, serif; --sans: "Archivo", "Helvetica Neue", Arial, sans-serif;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) { --bg: #0A0E14; --panel: #111721; --ink: #EDF2F7; --ink-2: #A7B4C4; --ink-3: #6F7D90; --line: rgba(200,220,255,.12); --line-strong: rgba(200,220,255,.3); --accent: #BFE3FF; --accent-soft: #15202E; --gold: #D3B15F; --warn: #F2A9A9; }
+}
+:root[data-theme="dark"] { --bg: #0A0E14; --panel: #111721; --ink: #EDF2F7; --ink-2: #A7B4C4; --ink-3: #6F7D90; --line: rgba(200,220,255,.12); --line-strong: rgba(200,220,255,.3); --accent: #BFE3FF; --accent-soft: #15202E; --gold: #D3B15F; --warn: #F2A9A9; }
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--bg); color: var(--ink); font: 16px/1.6 var(--sans); -webkit-font-smoothing: antialiased; }
+.doc { max-width: 780px; margin: 0 auto; padding: 48px 20px 96px; }
+h1, h2, h3 { font-family: var(--serif); font-weight: 400; line-height: 1.08; letter-spacing: -.005em; text-wrap: balance; margin: 0; }
+h1 { font-size: clamp(40px, 7vw, 64px); }
+h2 { font-size: 32px; margin-top: 72px; padding-top: 24px; border-top: 1px solid var(--line-strong); }
+h3 { font-size: 22px; margin-top: 36px; }
+p { margin: 14px 0 0; max-width: 66ch; }
+.kicker { color: var(--ink-3); font-size: 14px; margin: 0 0 16px; }
+.lede { font-size: 19px; color: var(--ink-2); margin-top: 20px; max-width: 60ch; }
+.status { display: inline-block; margin-top: 24px; padding: 6px 12px; border: 1px solid var(--line-strong); font-size: 13px; color: var(--ink-2); }
+.status b { color: var(--ink); font-weight: 600; }
+ul, ol { margin: 14px 0 0; padding-left: 22px; }
+li { margin: 6px 0; }
+li::marker { color: var(--ink-3); }
+strong { font-weight: 600; }
+em.brand { font-family: var(--serif); font-style: italic; font-size: 1.1em; }
+.table-wrap { overflow-x: auto; margin-top: 20px; border: 1px solid var(--line); background: var(--panel); }
+table { width: 100%; border-collapse: collapse; font-size: 14px; min-width: 560px; }
+th { text-align: left; font-weight: 600; color: var(--ink-2); padding: 12px 14px; border-bottom: 1px solid var(--line-strong); font-size: 12.5px; }
+td { padding: 12px 14px; border-bottom: 1px solid var(--line); vertical-align: top; color: var(--ink-2); }
+td:first-child { color: var(--ink); font-weight: 500; white-space: nowrap; }
+tr:last-child td { border-bottom: 0; }
+.num { font-variant-numeric: tabular-nums; }
+.swatches { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 14px; margin-top: 20px; }
+.sw { border: 1px solid var(--line); background: var(--panel); }
+.sw i { display: block; height: 64px; }
+.sw div { padding: 10px 12px; font-size: 13px; }
+.sw b { display: block; font-weight: 600; }
+.sw span { color: var(--ink-3); font-variant-numeric: tabular-nums; }
+.specimen { margin-top: 20px; border: 1px solid var(--line); background: var(--panel); padding: 28px; display: grid; gap: 14px; }
+.specimen .display { font-family: var(--serif); font-size: 48px; line-height: 1; letter-spacing: -.012em; }
+.specimen .display i { font-style: italic; }
+.specimen .body { max-width: 52ch; color: var(--ink-2); }
+.specimen .label { font-size: 13px; color: var(--ink-3); }
+.specimen .price { font-weight: 600; font-variant-numeric: tabular-nums; }
+.pair { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-top: 20px; }
+.pair > div { border: 1px solid var(--line); background: var(--panel); padding: 18px 20px; }
+.pair h4 { margin: 0 0 6px; font-size: 13px; font-weight: 600; color: var(--ink-2); }
+.pair ul { margin-top: 6px; padding-left: 18px; font-size: 14px; }
+.story { margin-top: 20px; border-top: 1px solid var(--line); }
+.story li { display: grid; grid-template-columns: 34px 1fr; gap: 14px; padding: 16px 0; border-bottom: 1px solid var(--line); margin: 0; }
+.story ol { list-style: none; padding: 0; margin: 0; counter-reset: beat; }
+.story li::before { counter-increment: beat; content: counter(beat); width: 30px; height: 30px; border: 1px solid var(--line-strong); display: grid; place-items: center; font-size: 12px; font-weight: 600; font-variant-numeric: tabular-nums; }
+.story b { display: block; font-weight: 600; }
+.story span { color: var(--ink-2); font-size: 15px; }
+.story small { display: block; color: var(--ink-3); font-size: 13px; margin-top: 4px; }
+.phase { margin-top: 20px; border: 1px solid var(--line); background: var(--panel); }
+.phase > div { padding: 18px 20px; border-bottom: 1px solid var(--line); display: grid; grid-template-columns: 110px 1fr; gap: 16px; }
+.phase > div:last-child { border-bottom: 0; }
+.phase .tag { font-size: 12.5px; font-weight: 600; color: var(--ink-2); }
+.phase .tag em { display: block; font-style: normal; font-weight: 400; color: var(--ink-3); margin-top: 4px; }
+.phase .tag .done { color: var(--accent); }
+.phase h4 { margin: 0; font-size: 16px; font-weight: 600; }
+.phase p { margin-top: 6px; font-size: 14.5px; }
+.phase ul { font-size: 14px; margin-top: 8px; }
+.callout { margin-top: 20px; padding: 18px 20px; background: var(--accent-soft); border-left: 2px solid var(--accent); font-size: 15px; }
+.callout p { margin: 0; }
+.refuse li { color: var(--ink-2); }
+footer.note { margin-top: 72px; padding-top: 20px; border-top: 1px solid var(--line); color: var(--ink-3); font-size: 13px; }
+a { color: var(--accent); text-underline-offset: 3px; }
+@media (max-width: 640px) { .pair { grid-template-columns: 1fr; } .phase > div { grid-template-columns: 1fr; gap: 6px; } h2 { font-size: 28px; margin-top: 56px; } .specimen .display { font-size: 38px; } }
+</style>
+<article class="doc">
+<p class="kicker">Creative direction and engineering plan for icevaultnyc.com</p>
+<h1>Ice Vault Blueprint</h1>
+<p class="lede">How a diamond and jewelry workshop on 47th Street should look, move and build online so it out-trusts TraxNYC, out-clarifies Icebox, and looks like nobody else in the category.</p>
+<p class="status"><b>Status</b> Phase 0 and Phase 1 applied to the live site on 6 September 2026. Phases 2 to 6 are the roadmap.</p>
+
+<h2>The brand</h2>
+<p><em class="brand">Ice</em> is street language for diamonds. <em class="brand">Vault</em> is where value is kept. The name holds two worlds at once: the energy of hip-hop jewelry culture and the credibility of a Diamond District bench where gold is weighed on a scale in front of you. That tension is the brand. Nobody in the category owns it. Trax and Icebox own the energy. Tiffany owns the calm. Ice Vault sits between them: street pieces, bank-vault trust.</p>
+<p><strong>Position.</strong> The vault on 47th Street. Real weight, real stones, made in-house, priced close to the metal.</p>
+<p><strong>Promise, in three words.</strong> Weighed. Appraised. Insured. Every piece leaves the shop with a weight on the ticket, a signed appraisal in the box, and insured shipping to the door. This line goes under the hero and on every product page.</p>
+<p><strong>Voice.</strong> A jeweler talking across the counter. Short sentences. Numbers before adjectives. Active voice. The site says "27 grams, 14K, ships Thursday" where competitors say "stunning luxurious statement piece".</p>
+<div class="pair">
+  <div><h4>Say</h4><ul><li>Solid links, 27.1 grams, stamped 14K.</li><li>Ships in 2 to 5 business days.</li><li>Call or text a jeweler.</li><li>Custom work is final sale.</li></ul></div>
+  <div><h4>Never say</h4><ul><li>Elevate your look with timeless elegance.</li><li>Limited stock, order now.</li><li>Our team of experts.</li><li>Best price guaranteed.</li></ul></div>
+</div>
+
+<h2>The audience</h2>
+<p>Three buyers pay the rent. A fourth shows up in December. More than three quarters arrive on a phone, most from Instagram, TikTok or a Google search for "gold chain NYC". Every layout decision starts at 390 pixels wide.</p>
+<div class="table-wrap"><table>
+<thead><tr><th>Buyer</th><th>Who</th><th>Buys</th><th>Ticket</th><th>What convinces them</th><th>What kills the sale</th></tr></thead>
+<tbody>
+<tr><td>The Builder</td><td>Men 22 to 40, NYC and national, hip-hop and sports culture. First or fifth chain.</td><td>Cuban, rope, tennis chains. Pendants. Bracelets.</td><td class="num">$800 to $8,000</td><td>Weight in grams, karat stamp, how it sits on a neck, a person who answers a text at 11 pm.</td><td>Mall markup, vague weights, hollow sold as solid, a chatbot.</td></tr>
+<tr><td>The Proposer</td><td>Men and women 26 to 38. Researches for weeks.</td><td>Engagement rings, loose diamonds, bands.</td><td class="num">$3,000 to $20,000</td><td>Control and transparency: GIA or IGI report, lab versus natural explained, price held, video call from the bench.</td><td>Pressure, hidden pricing, a builder that ends in "call for quote".</td></tr>
+<tr><td>The Collector</td><td>35 to 60. Knows references by number.</td><td>Watches, custom pieces, trade-ins.</td><td class="num">$10,000 and up</td><td>Authentication, discretion, a relationship with one jeweler, fair trade-in numbers.</td><td>Stock photos of watches, no reference numbers, no warranty terms.</td></tr>
+<tr><td>The Gifter</td><td>Anyone, October to February and May.</td><td>Women's pendants, studs, thin chains.</td><td class="num">Under $1,000</td><td>Ships fast, comes in a box, easy exchange.</td><td>Slow shipping, unclear return policy.</td></tr>
+</tbody></table></div>
+
+<h2>The competitors</h2>
+<p>Two kinds. Direct competitors sell the same pieces to the same buyer. Benchmarks sell something else but set the bar for one part of the experience.</p>
+<div class="table-wrap"><table>
+<thead><tr><th>Site</th><th>What they do well</th><th>Where they lose</th><th>How Ice Vault wins</th></tr></thead>
+<tbody>
+<tr><td>TraxNYC</td><td>Huge catalog, celebrity proof, make-an-offer, VIP phone line, financing.</td><td>Cluttered grids of 1,300 items, dated Shopify theme, slow, dark-and-gold like every jeweler on the block.</td><td>Fewer, better-shot pieces. Specs on every card. Cold palette so the gold reads warmer than theirs. Same phone-first service, cleaner path to it.</td></tr>
+<tr><td>Icebox</td><td>YouTube reach, celebrity walk-ins, custom energy.</td><td>Chaos. Hard to find a price. Feels like a music video, not a jeweler.</td><td>Restraint. One piece per frame. Prices visible. The workshop shown, not the party.</td></tr>
+<tr><td>Frost NYC, Shyne</td><td>Broad mid-market range, frequent sales.</td><td>Template themes, white-box catalog photos, no story.</td><td>Editorial photography, a real bench, a real address, a real person.</td></tr>
+<tr><td>Brilliant Earth (benchmark)</td><td>The best ring builder in the business.</td><td>Not a competitor for chains.</td><td>Copy the builder logic: setting, metal, stone, live price. Add price held for 14 days.</td></tr>
+<tr><td>Mejuri (benchmark)</td><td>Clarity, calm, product-led photography.</td><td>Not our customer.</td><td>Borrow the calm and the 4:5 photo discipline. Keep the street.</td></tr>
+<tr><td>Tiffany, Cartier (benchmark)</td><td>Motion restraint, whitespace, type as identity.</td><td>Cold to a first-time buyer.</td><td>Take the restraint. Keep the phone number on screen.</td></tr>
+</tbody></table></div>
+
+<h2>The first three seconds</h2>
+<p>The visitor should feel three things in order: <strong>this is real</strong>, <strong>this is expensive</strong>, <strong>I can afford to be here</strong>. Calm confidence, not hype. The vault door opens, the light comes on, and there is gold on the table.</p>
+<div class="story"><ol>
+<li><b>0.0 s</b><span>Dark room. The header is transparent over a full-bleed macro photo of gold links on charcoal. Nothing moves yet.</span><small>Hero image is the largest element and the first paint. No layout shift.</small></li>
+<li><b>0.3 to 1.2 s</b><span>The light comes on. The dark overlay lifts to its resting state and the headline rises 14 pixels into place, followed by one sentence and two buttons. One orchestrated moment, once.</span><small>Headline in Bodoni Moda at 96 px. Sentence case. No word colored differently.</small></li>
+<li><b>By 3 s</b><span>The visitor has read the address, seen a phone number, and understood there are two doors: Men's and Women's. Below the fold sits the promise strip: weighed, appraised, insured.</span><small>No popup. No autoplay video. No cookie wall. No countdown.</small></li>
+</ol></div>
+<div class="table-wrap"><table>
+<thead><tr><th>Target</th><th>Value</th><th>Why</th></tr></thead>
+<tbody>
+<tr><td>Largest Contentful Paint</td><td class="num">Under 1.8 s on 4G</td><td>The hero photo is the argument. It must land before the visitor decides.</td></tr>
+<tr><td>Cumulative Layout Shift</td><td class="num">Under 0.05</td><td>Width and height on every image. Fonts with fallback metrics.</td></tr>
+<tr><td>Home page weight, mobile</td><td class="num">Under 1.5 MB</td><td>Cards load 640 px images lazily. Only the hero loads eagerly.</td></tr>
+<tr><td>Interruptions before first scroll</td><td class="num">0</td><td>Luxury does not interrupt.</td></tr>
+</tbody></table></div>
+
+<h2>Visual identity</h2>
+<h3>Color</h3>
+<p>Ice on black. Every jeweler on 47th Street is black and gold. Ice Vault is black and ice, so the gold in the photographs is the only warm thing on the page and reads richer for it. Gold never appears as interface chrome. The ice blue is spent on one element per screen at most.</p>
+<div class="swatches">
+  <div class="sw"><i style="background:#0A0E14"></i><div><b>Vault black</b><span>#0A0E14 ground</span></div></div>
+  <div class="sw"><i style="background:#111721"></i><div><b>Panel</b><span>#111721 raised surfaces</span></div></div>
+  <div class="sw"><i style="background:#EDF2F7"></i><div><b>Ice white</b><span>#EDF2F7 text, primary button</span></div></div>
+  <div class="sw"><i style="background:#A7B4C4"></i><div><b>Muted</b><span>#A7B4C4 secondary text</span></div></div>
+  <div class="sw"><i style="background:#BFE3FF"></i><div><b>Ice blue</b><span>#BFE3FF one accent per screen</span></div></div>
+  <div class="sw"><i style="background:#D3B15F"></i><div><b>Gold</b><span>#D3B15F photographs and metal chips only</span></div></div>
+</div>
+<h3>Typography</h3>
+<p>Two faces. <strong>Bodoni Moda</strong> for display: high contrast, sharp terminals, the closest a typeface gets to a cut stone. <strong>Archivo</strong> for everything else: an industrial grotesque with the flavor of New York signage. Sentence case everywhere, including labels. Prices in tabular figures so columns line up.</p>
+<div class="specimen">
+  <div class="display">Ice, cut and set <i>on 47th Street.</i></div>
+  <div class="body">Solid gold chains, diamond pendants, engagement rings, watches and custom pieces. Made in our Diamond District workshop, weighed and appraised before they ship.</div>
+  <div class="label">14K Yellow Gold</div>
+  <div class="price">$3,000 <span style="color:var(--ink-3);font-weight:400">or $250 a month</span></div>
+</div>
+<div class="table-wrap"><table>
+<thead><tr><th>Role</th><th>Face</th><th>Size</th><th>Notes</th></tr></thead>
+<tbody>
+<tr><td>Hero headline</td><td>Bodoni Moda 400</td><td class="num">96 / 0.94</td><td>Tracking minus 1.4%. Max 11 characters per line.</td></tr>
+<tr><td>Section heading</td><td>Bodoni Moda 400</td><td class="num">40 / 1.05</td><td>Balanced wrapping.</td></tr>
+<tr><td>Product title</td><td>Archivo 500</td><td class="num">14 / 1.4</td><td>Two lines, then clipped.</td></tr>
+<tr><td>Body</td><td>Archivo 400</td><td class="num">16 / 1.5</td><td>Under 66 characters a line.</td></tr>
+<tr><td>Labels and specs</td><td>Archivo 400</td><td class="num">12 to 13</td><td>Sentence case. Never all caps.</td></tr>
+<tr><td>Prices</td><td>Archivo 600</td><td class="num">15 to 26</td><td>Tabular figures.</td></tr>
+</tbody></table></div>
+<h3>Photography</h3>
+<ul>
+<li>Every product image is 4:5 portrait. Cards, tiles, galleries and the ring builder share this ratio so the grid never stutters.</li>
+<li>Dark grounds: charcoal, slate, black velvet, dark fabric. One light source from upper left. Gold and diamonds are the only bright things in the frame.</li>
+<li>Four shots per piece: macro hero, on the body, scale shot next to a coin or on a hand, clasp and stamp detail.</li>
+<li>Lifestyle shots show real skin and real clothes. No white studio sweep except for the spec view.</li>
+<li>Until the real shoot, licensed Pexels photos matched by piece type, metal and stone stand in. The product page says so in one line.</li>
+</ul>
+<h3>Components</h3>
+<ul>
+<li><strong>Edges.</strong> 2 pixel radius. Luxury is square. Only the cart badge is round.</li>
+<li><strong>Buttons.</strong> 50 pixels tall. Ice white fill for the one primary action, hairline outline for the rest, ice blue only for Add to cart and Request.</li>
+<li><strong>Badges.</strong> Dark glass chips over photos, hairline border, sentence case. Sale in a muted rose, never red.</li>
+<li><strong>Rules.</strong> One pixel hairlines separate sections and open every section heading. They carry structure so boxes do not have to.</li>
+<li><strong>The mark.</strong> An octagon, a diamond seen from above, which is also a vault door. Drawn in ice blue at 28 pixels beside the wordmark.</li>
+</ul>
+<h3>What we refuse</h3>
+<ul class="refuse">
+<li>Gold gradients, gold text, gold buttons.</li>
+<li>All-caps eyebrow labels, arrows at the end of link text, middle dots between facts.</li>
+<li>Popups, exit intent, countdown timers, fake stock counts, chat bubbles that bounce.</li>
+<li>Autoplay carousels and fade-in-on-scroll on every block.</li>
+<li>Stock photos of models holding phones. Anyone in a photo is wearing the jewelry.</li>
+</ul>
+
+<h2>Page structure</h2>
+<div class="table-wrap"><table>
+<thead><tr><th>Template</th><th>Job</th><th>Key modules</th></tr></thead>
+<tbody>
+<tr><td>Home</td><td>Open the vault. Show two doors. Prove the bench.</td><td>Photo hero, promise strip, category tiles, product rows, lookbook pair, engagement editorial, workshop, reviews, showroom, newsletter.</td></tr>
+<tr><td>Collection</td><td>Let a buyer narrow 30 pieces to 3 in under a minute.</td><td>Sticky filters by price, type, metal, purity, stones. Sort. Count. Deep links from the menus preselect a type.</td></tr>
+<tr><td>Product</td><td>Answer every question a text message would ask.</td><td>Three-photo gallery, price with wire and monthly figures, length and color options, Add to cart, Make an offer, Text me this piece, specs table, related pieces.</td></tr>
+<tr><td>Custom hub</td><td>Turn an idea into a deposit.</td><td>Workshop hero, five-step process, cost anchors, request form, past projects.</td></tr>
+<tr><td>Ring builder</td><td>Setting, metal, diamond, live price, request.</td><td>Photo setting cards, metal chips, shape icons, carat slider, origin toggle, sticky summary.</td></tr>
+<tr><td>Diamond search</td><td>Filter 420 stones by the four Cs and origin.</td><td>Chips, ranges, sortable table, inquire per stone.</td></tr>
+<tr><td>Cart and invoice request</td><td>Hold pieces and hand them to a human.</td><td>Local cart, wire and monthly totals, invoice form that includes the cart.</td></tr>
+<tr><td>Trust pages</td><td>Remove the last objection.</td><td>About with the bench, financing, shipping and returns, services with prices, sell or trade in, reviews, questions, appointment.</td></tr>
+</tbody></table></div>
+<p><strong>Header.</strong> Announcement line with the phone. Then the row: menu, mark and wordmark, four doors (Men's, Women's, Custom, Watches), search, Book a visit, cart. A second row of seven shortcuts. On the home page the header is transparent over the hero and turns solid after the first scroll. The dropdowns open directly under the row, so the cursor never leaves them.</p>
+<p><strong>Footer.</strong> The phone number in 34 pixel Bodoni, the address, hours, then four link columns and the four trust facts.</p>
+
+<h2>Scroll story, home</h2>
+<p>The home page is a walk through the shop. Each beat has one job.</p>
+<div class="story"><ol>
+<li><b>The vault</b><span>Full-bleed gold on charcoal. Headline, one sentence, two doors, the address and phone.</span><small>Feel: this is real. Do: pick a door.</small></li>
+<li><b>The promise</b><span>Three facts in a strip: weighed to a tenth of a gram, GIA or IGI on stones over half a carat, insured to your door. The sale code sits quietly at the end.</span><small>Feel: they measure. Do: keep scrolling.</small></li>
+<li><b>His side</b><span>Six photo tiles: chains, pendants, rings, earrings, bracelets, watches, each with a count.</span><small>Feel: depth. Do: enter a category.</small></li>
+<li><b>The staple</b><span>Four chains, best sellers first. The one row every visitor expects.</span><small>Do: tap a chain.</small></li>
+<li><b>Worn</b><span>Two large photos, For him and For her, jewelry on people. The first place the site breathes.</span><small>Feel: I can see myself. Do: choose a side.</small></li>
+<li><b>The signature</b><span>Four pendants.</span><small>Do: tap a pendant.</small></li>
+<li><b>Proof by behavior</b><span>Best sellers, six wide, with a short note on the left.</span><small>Feel: other people trust this.</small></li>
+<li><b>Her side</b><span>Six photo tiles for women's.</span><small>Do: enter a category.</small></li>
+<li><b>The question</b><span>Engagement editorial: a solitaire on dark satin, the builder pitch, three facts about reports, sizing and price hold.</span><small>Feel: I am in control. Do: open the builder.</small></li>
+<li><b>Necklaces</b><span>Four women's necklaces.</span><small>Do: tap.</small></li>
+<li><b>The bench</b><span>Three workshop photos: sketch, torch, loupe. Idea to render, cast to polish, checked and appraised.</span><small>Feel: they make it here. Do: start a custom project or book a visit.</small></li>
+<li><b>New and watches</b><span>Eight new pieces, four watches with reference numbers.</span><small>Feel: it moves. Do: tap.</small></li>
+<li><b>Trust and voices</b><span>Four trust facts with icons, three client quotes in Bodoni.</span><small>Feel: safe.</small></li>
+<li><b>The door</b><span>Showroom photo, address, hours, book an appointment, call.</span><small>Do: book.</small></li>
+<li><b>Stay</b><span>One email a month. Nothing else.</span></li>
+</ol></div>
+<p><strong>Scroll story, product.</strong> Photo first, price second, the wire and monthly figures third, options and Add to cart fourth, then stock and shipping, then a four-line trust list, then details and the spec table, then four related pieces. A buyer who reads only the left column and the first three lines of the right has everything they need.</p>
+
+<h2>Motion system</h2>
+<p>Motion answers the visitor or reveals once. Nothing loops. Nothing fades in on scroll by default. One orchestrated moment per page, and the rest is response.</p>
+<div class="table-wrap"><table>
+<thead><tr><th>Token</th><th>Value</th><th>Use</th></tr></thead>
+<tbody>
+<tr><td>--dur-1</td><td class="num">150 ms</td><td>Menus, hover color, focus.</td></tr>
+<tr><td>--dur-2</td><td class="num">250 ms</td><td>Buttons, toasts, filter reflow, gallery swap.</td></tr>
+<tr><td>--dur-3</td><td class="num">450 ms</td><td>Card photo crossfade, builder preview.</td></tr>
+<tr><td>--dur-4</td><td class="num">800 ms</td><td>Card photo scale, hero reveal.</td></tr>
+<tr><td>--ease-standard</td><td>cubic-bezier(.2, .6, .2, 1)</td><td>Everything that responds to the visitor.</td></tr>
+<tr><td>--ease-emphasis</td><td>cubic-bezier(.65, 0, .25, 1)</td><td>The one reveal per page.</td></tr>
+</tbody></table></div>
+<div class="table-wrap"><table>
+<thead><tr><th>Trigger</th><th>Motion</th><th>Timing</th></tr></thead>
+<tbody>
+<tr><td>Home loads</td><td>Dark overlay lifts to rest. Headline, sentence, buttons and note rise 14 px and fade in, 90 ms apart.</td><td class="num">1200 ms emphasis, once</td></tr>
+<tr><td>First scroll</td><td>Header turns from transparent to solid.</td><td class="num">250 ms</td></tr>
+<tr><td>Hover a card</td><td>Second photo crossfades in, image scales to 1.04.</td><td class="num">450 and 800 ms</td></tr>
+<tr><td>Hover a menu</td><td>Panel fades and rises 4 px.</td><td class="num">150 ms</td></tr>
+<tr><td>Change a filter</td><td>Grid fades to 60% and back while cards hide.</td><td class="num">250 ms</td></tr>
+<tr><td>Tap a thumbnail</td><td>Main photo crossfades.</td><td class="num">250 ms</td></tr>
+<tr><td>Hover the main photo, desktop</td><td>Zoom to 1.8 around the cursor.</td><td class="num">250 ms</td></tr>
+<tr><td>Add to cart</td><td>Button reads Added for 1.6 s, cart badge scales once, toast rises.</td><td class="num">250 ms</td></tr>
+<tr><td>Change the ring</td><td>Price counts to the new value in tabular figures. Preview crossfades.</td><td class="num">300 and 450 ms</td></tr>
+<tr><td>Reduced motion</td><td>Everything above becomes an instant change. Only opacity remains.</td><td>System setting</td></tr>
+</tbody></table></div>
+<p>Only transform and opacity animate. No animation library. CSS transitions and one keyframe sequence carry the whole system in under two kilobytes.</p>
+
+<h2>Technology</h2>
+<p><strong>Now.</strong> A Python and Jinja2 static generator builds 239 pages into plain HTML, one stylesheet and three small scripts. GitHub Actions rebuilds and publishes on every push. There is no database, no framework, no tracker. The site is fast because there is nothing to be slow.</p>
+<div class="table-wrap"><table>
+<thead><tr><th>Layer</th><th>Choice</th><th>Why</th></tr></thead>
+<tbody>
+<tr><td>Build</td><td>Python 3, Jinja2 templates, one build script</td><td>Templates are readable by a designer. Porting to Shopify Liquid later is close to one to one.</td></tr>
+<tr><td>Styles</td><td>One hand-written stylesheet, design tokens as custom properties</td><td>About 40 KB. No utility framework to fight.</td></tr>
+<tr><td>Behavior</td><td>Vanilla JavaScript, three files under 20 KB total</td><td>Cart, filters, search, forms, builder, diamond search. No framework runtime.</td></tr>
+<tr><td>Images</td><td>Three widths per photo, srcset on cards, eager hero, lazy everything else</td><td>Sharp on retina, light on mobile. Next step: WebP and AVIF.</td></tr>
+<tr><td>Fonts</td><td>Google Fonts with preconnect</td><td>Self-host WOFF2 in Phase 1 to remove the third-party hop.</td></tr>
+<tr><td>Forms</td><td>Mailto now, Formspree or Basin endpoint when set in config</td><td>Zero backend. One setting switches to real delivery.</td></tr>
+<tr><td>Hosting</td><td>GitHub Pages now, Cloudflare Pages with the custom domain next</td><td>Free, edge cached, HTTPS. Cloudflare adds image resizing and analytics.</td></tr>
+<tr><td>Search</td><td>Client-side over a 195-item JSON index</td><td>Instant. Enough until the catalog passes about 2,000 pieces.</td></tr>
+<tr><td>Structured data</td><td>Product, Breadcrumb and JewelryStore JSON-LD</td><td>Rich results for pieces and the shop in Google.</td></tr>
+<tr><td>Commerce, later</td><td>Shopify custom theme, or Shopify Storefront API behind this front end</td><td>When card checkout, inventory and Affirm matter more than a phone call. Trax runs on Shopify for a reason.</td></tr>
+<tr><td>Analytics</td><td>Plausible or Cloudflare Web Analytics</td><td>Cookie-free, one script, no consent wall.</td></tr>
+</tbody></table></div>
+<div class="callout"><p>Keep the invoice-request checkout until the shop takes more than a handful of web orders a week. High-ticket jewelry closes by phone and text. A payment form on day one adds fraud risk and removes the conversation that sells the piece.</p></div>
+
+<h2>Build order</h2>
+<div class="phase">
+  <div><div class="tag"><span class="done">Phase 0, done</span><em>6 Sep</em></div><div><h4>Structure and stock</h4><p>Catalog of 195 pieces in 12 categories, templates, tokens, filters, cart, ring builder, diamond search, custom flow, trust pages, licensed photos, GitHub Pages deploy.</p></div></div>
+  <div><div class="tag"><span class="done">Phase 1, done</span><em>6 Sep</em></div><div><h4>The luxury pass</h4><p>Transparent header over the hero, light-on reveal, promise strip, squared edges, quiet badges, tabular prices, motion tokens, srcset images, text-to-buy button, structured data, working menus.</p></div></div>
+  <div><div class="tag">Phase 2<em>1 to 2 days of Alex's time</em></div><div><h4>Make it true</h4><ul><li>Real phone line (OpenPhone or Google Voice), email, address and hours in <code>config.py</code>.</li><li>Domain icevaultnyc.com on Cloudflare Pages. Form endpoint set. Plausible analytics.</li><li>Real reviews from the Google Business Profile. Real team on the About page.</li></ul></div></div>
+  <div><div class="tag">Phase 3<em>One shoot day, one edit day</em></div><div><h4>Photography</h4><ul><li>Twenty best-selling pieces, four shots each, dark grounds, one light. Replace the stock pools.</li><li>Lookbook: two models, one afternoon, on location in the shop and on 47th Street.</li><li>Bench: torch, polish, loupe, the scale with a chain on it.</li></ul></div></div>
+  <div><div class="tag">Phase 4<em>2 days</em></div><div><h4>Conversion</h4><ul><li>Affirm or Klarna prequalification on product pages.</li><li>Text-to-buy everywhere: every card gets a quiet Text about this piece action on mobile.</li><li>Video call booking from the product page. Saved pieces that survive a phone restart.</li></ul></div></div>
+  <div><div class="tag">Phase 5<em>1 to 2 weeks</em></div><div><h4>Commerce</h4><ul><li>Port templates to a Shopify custom theme, or connect the Storefront API. Same tokens, same layout.</li><li>Card checkout, inventory, order emails, tax. Keep the phone number on every page.</li></ul></div></div>
+  <div><div class="tag">Phase 6<em>Ongoing</em></div><div><h4>Growth</h4><ul><li>Collection pages by width and length: 6 mm Cuban, 22 inch rope. These are the searches people type.</li><li>Guides: how much a 6 mm Cuban weighs, lab versus natural in plain words, how to size a ring at home.</li><li>Custom project tracker: a private page per client with photos at each stage.</li></ul></div></div>
+</div>
+
+<h2>Definition of done</h2>
+<ul>
+<li>Every page passes the three-second test on a phone: real, expensive, welcome.</li>
+<li>Lighthouse mobile above 90 on performance, accessibility and SEO.</li>
+<li>Every image has width, height and alt. Every focusable element has a visible focus ring.</li>
+<li>Every product page answers weight, purity, size, price, monthly price, ship date and return terms without scrolling on desktop.</li>
+<li>A visitor can reach a human in one tap from any page.</li>
+<li>Numbers to watch: product page to invoice or text rate, appointment requests per week, builder completions, bounce on the hero.</li>
+</ul>
+<footer class="note">Ice Vault Blueprint, version 1, 6 September 2026. Source and site: github.com/alexandrey128-cell/ice-vault. Photos on the current site are licensed Pexels stock until the Phase 3 shoot.</footer>
+</article>
