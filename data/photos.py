@@ -94,7 +94,7 @@ SIZES = {"card": 640, "large": 1280, "banner": 1920}
 
 
 def photo(pid, size="card"):
-    return f"/img/photos/{pid}-{SIZES[size]}.jpg"
+    return f"/img/photos/{pid}-{SIZES[size]}.webp"
 
 
 def _pool_for(p):

@@ -1,5 +1,6 @@
 {% extends "base.html" %}
 {% from "partials/macros.html" import field, select, contact_fields %}
+{% block scripts %}<script>(function(){var q=new URLSearchParams(location.search);var t=document.getElementById("f-type");if(t&&q.get("type")==="video")t.value="Video call";var i=document.getElementById("f-interest");if(i&&q.get("piece")&&!i.value)i.value="Item "+q.get("piece");})();</script>{% endblock %}
 {% block main %}
 <div class="wrap">
   <nav class="crumbs" aria-label="Breadcrumb"><a href="/">Home</a><span>Appointment</span></nav>

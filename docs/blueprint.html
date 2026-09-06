@@ -257,7 +257,7 @@ a { color: var(--accent); text-underline-offset: 3px; }
 <tr><td>Build</td><td>Python 3, Jinja2 templates, one build script</td><td>Templates are readable by a designer. Porting to Shopify Liquid later is close to one to one.</td></tr>
 <tr><td>Styles</td><td>One hand-written stylesheet, design tokens as custom properties</td><td>About 40 KB. No utility framework to fight.</td></tr>
 <tr><td>Behavior</td><td>Vanilla JavaScript, three files under 20 KB total</td><td>Cart, filters, search, forms, builder, diamond search. No framework runtime.</td></tr>
-<tr><td>Images</td><td>Three widths per photo, srcset on cards, eager hero, lazy everything else</td><td>Sharp on retina, light on mobile. Next step: WebP and AVIF.</td></tr>
+<tr><td>Images</td><td>Three widths per photo, srcset on cards, eager hero, lazy everything else</td><td>WebP at quality 80, sharp on retina, light on mobile. Next step: AVIF.</td></tr>
 <tr><td>Fonts</td><td>Google Fonts with preconnect</td><td>Self-host WOFF2 in Phase 1 to remove the third-party hop.</td></tr>
 <tr><td>Forms</td><td>Mailto now, Formspree or Basin endpoint when set in config</td><td>Zero backend. One setting switches to real delivery.</td></tr>
 <tr><td>Hosting</td><td>GitHub Pages now, Cloudflare Pages with the custom domain next</td><td>Free, edge cached, HTTPS. Cloudflare adds image resizing and analytics.</td></tr>

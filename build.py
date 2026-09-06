@@ -18,7 +18,8 @@ DIST = os.path.join(ROOT, "dist")
 # BASE="/ice-vault" builds for a sub-folder (GitHub project pages). SITE_URL overrides the public domain.
 BASE = os.environ.get("BASE", "").rstrip("/")
 import re
-_ATTR_RE = re.compile(r'((?:href|src|action)=")/(?!/)')
+_ATTR_RE = re.compile(r'((?<![\w-])(?:href|src|action|data-src|data-photo|poster)=")/(?!/)')
+_SRCSET_RE = re.compile(r'srcset="([^"]*)"')
 
 from jinja2 import Environment, FileSystemLoader, select_autoescape
 from markupsafe import Markup
@@ -64,6 +65,7 @@ def write(path, content):
     os.makedirs(os.path.dirname(full), exist_ok=True)
     if BASE and full.endswith(".html"):
         content = _ATTR_RE.sub(lambda m: m.group(1) + BASE + "/", content)
+        content = _SRCSET_RE.sub(lambda m: 'srcset="' + ", ".join((BASE + u.strip()) if u.strip().startswith("/") and not u.strip().startswith("//") else u.strip() for u in m.group(1).split(",")) + '"', content)
     with open(full, "w", encoding="utf-8") as f:
         f.write(content)
 
